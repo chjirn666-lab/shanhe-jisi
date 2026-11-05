@@ -1,0 +1,13 @@
+{
+  "name": "shanhe-jisi",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "山河寄思——纪念毛泽东同志的交互式数字长卷",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test tests/core.test.mjs",
+    "check": "node tools/check.mjs"
+  },
+  "engines": {"node": ">=20"}
+}
