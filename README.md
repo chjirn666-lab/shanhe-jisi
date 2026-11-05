@@ -71,5 +71,5 @@ tools/home-check.mjs  首页浏览器交互检查（需配置本机浏览器测�
 - 纪念卡和手记只在本地浏览器保存，没有公开留言墙、注册账号或共享数据库。
 - 页面没有模拟毛泽东声线、虚构历史影像或虚构用户数量。
 - Font Awesome Free 6.4.0 字体和图标复用自文旅站，保留 CSS 文件头的许可声明。新增山水与书卷插画为项目原创。
-- 首页收录三张历史照片，分别来自[埃德加·斯诺 1937年照片（CC0）](https://commons.wikimedia.org/wiki/File:Mao_Zedong_1937.jpg)、[陈正青 1950年肖像（公有领域）](https://commons.wikimedia.org/wiki/File:Mao_Tse_Tung.jpg)及[荷兰国家档案馆 ANEFO 馆藏（CC0）](https://commons.wikimedia.org/wiki/File:Mao_Zedong_Anefo.jpg)。最后一张的来源页面对年份有不同标注，本站未确定具体年份。
+- 首页历史照片栏目收录六张影像，每张图注提供档案出处及使用说明。新增的[1931年肖像](https://commons.wikimedia.org/wiki/File:Mao1931.jpg)和[卡尔逊合影](https://commons.wikimedia.org/wiki/File:Photograph_of_Mao_Zedong_with_Evans_Carlson_circa_1937_Trim.jpg)在维基共享资源标注为公有领域。[尼克松会见照片](https://catalog.archives.gov/id/194759)使用美国国家档案馆原始上传版本。荷兰国家档案馆 ANEFO 馆藏照片的年份有不同标注，图注保留待核实说明。
 - 页面文案未声称已获比赛奖项或已满足传智杯全部规则；参赛材料需按学校正式通知准备。

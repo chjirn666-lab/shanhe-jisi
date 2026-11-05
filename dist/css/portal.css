@@ -15,4 +15,26 @@ html[data-theme="dark"] .spot-card-cover{background:#f3efe5}
 @media(max-width:992px){.overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.history-photo>a{height:180px}.feature-portrait{flex-basis:110px}}
 @media(max-width:650px){.memorial-feature .feature-portrait{display:flex;align-items:center;gap:12px;text-align:left}.feature-portrait img{width:74px;height:84px;margin:0}.feature-portrait figcaption{margin:0}.history-photos,.life-overview{padding:20px;margin:22px 0}.section-intro{display:block}.section-intro>a{display:inline-block;margin-top:10px}.section-intro h2{font-size:21px}.photo-grid{grid-template-columns:1fr}.history-photo{display:grid;grid-template-columns:120px minmax(0,1fr)}.history-photo>a{height:100%;min-height:175px}.history-photo img{object-fit:cover;object-position:center 25%}.history-photo figcaption{padding:13px}.history-photo h3{font-size:15px}.history-photo p,.overview-grid p{font-size:12px}.overview-grid{grid-template-columns:1fr}.overview-grid article{padding:15px}}
 @media(max-width:600px){.marker-place{font-size:23px}.marker-year{font-size:28px}.marker-number{font-size:22px}.marker-read{font-size:14px}.map-caption{font-size:17px}.map-signature{font-size:20px}}
+.history-photo--scene img {
+    object-fit: contain;
+}
+.topic-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.topic-grid p + p {
+    margin-top: 10px;
+}
+.topic-source {
+    display: block;
+    margin-top: 10px;
+    color: var(--link-color);
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+@media (max-width: 760px) {
+    .topic-grid {
+        grid-template-columns: 1fr;
+    }
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}

@@ -18,8 +18,12 @@ try{
  await page.screenshot({path:path.join(out,'homepage-first-screen.png')});
  assert.equal(await page.$$eval('.map-result',items=>items.length),6);
  assert.equal(await page.$$eval('.spot-card',items=>items.length),6);
- assert.deepEqual(await page.$$eval('.history-photo img',items=>items.map(i=>i.complete&&i.naturalWidth>0)),[true,true,true]);
- assert.equal(await page.$$eval('.overview-grid article',items=>items.length),4);checks.push('历史照片加载和生平内容展示');
+ const gallery = await page.$('#history-photos');
+ await gallery.screenshot({path:path.join(out,'homepage-photo-archive.png')});
+ await page.waitForFunction(() => Array.from(document.querySelectorAll('.history-photo img')).every(img => img.complete && img.naturalWidth > 0));
+ assert.equal(await page.$$eval('.history-photo img',items=>items.length),6);
+ assert.equal(await page.$$eval('.life-overview:not(.history-topics) article',items=>items.length),4);
+ assert.equal(await page.$$eval('.history-topics article',items=>items.length),3);checks.push('六张历史照片加载和生平专题展示');
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);checks.push('桌面首屏、6个足迹、6张推荐卡片与无横向溢出');
  await page.type('#map-search','遵义');
  assert.equal(await page.$$eval('.map-result',items=>items.length),1);
