@@ -9,7 +9,7 @@ const root=path.dirname(fileURLToPath(import.meta.url));
 try{const content=await fs.readFile(path.join(root,'.env'),'utf8');for(const line of content.split(/\r?\n/)){const match=line.match(/^\s*([A-Z][A-Z0-9_]*)\s*=\s*(.*?)\s*$/);if(match&&!Object.hasOwn(process.env,match[1]))process.env[match[1]]=match[2].replace(/^(['"])(.*)\1$/,'$2');}}catch(error){if(error.code!=='ENOENT')console.error('无法读取本地配置，使用环境变量。');}
 const staticRoot=path.join(root,'dist');
 const port=Number(process.env.PORT||8790),host=process.env.HOST||'127.0.0.1';
-const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.json':'application/json; charset=utf-8'};
+const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.woff2':'font/woff2','.json':'application/json; charset=utf-8'};
 const limits=new Map();
 function json(res,status,payload){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(payload));}
 const server=http.createServer(async(req,res)=>{
