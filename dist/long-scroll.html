@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3efe5">
+  <meta name="description" content="山河寄思：纪念毛泽东同志的交互式数字长卷。循历史足迹，读诗词山河，让每一次怀念，都成为一次有出处的阅读。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <title>山河寄思 · 纪念毛泽东同志</title>
+  <link rel="icon" href="assets/seal.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/knowledge.js"></script>
+  <script defer src="js/guide-core.js"></script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至正文</a>
+  <header class="site-header">
+    <a href="index.html" class="brand" aria-label="返回山河寄思首页"><span class="brand-seal" aria-hidden="true">山河</span><span>山河寄思<small>返回首页 / HOME</small></span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav">篇章目录 <span aria-hidden="true">☰</span></button>
+    <nav id="main-nav" aria-label="篇章导航">
+      <a href="#journey">壹 · 足迹长卷</a><a href="#poetry">贰 · 诗词山河</a><a href="#guide">叁 · 史料问答</a><a href="#memory">肆 · 寄语山河</a>
+    </nav>
+    <button class="source-button" data-open-sources>史料索引 <span aria-hidden="true">↗</span></button>
+  </header>
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <img class="hero-landscape" src="assets/landscape.svg" alt="原创水墨意境山河：层山、江流与一轮朱红色太阳" width="1600" height="860" fetchpriority="high">
+      <div class="hero-content">
+        <p class="eyebrow"><span></span> 一卷山河 · 一份怀念</p>
+        <h1 id="hero-title">山河<span>寄思</span><i class="title-seal" aria-hidden="true">不忘<br>来路</i></h1>
+        <p class="hero-subtitle">纪念毛泽东同志</p>
+        <p class="hero-dates">1893.12.26 <span>—</span> 1976.09.09</p>
+        <p class="hero-description">把时光铺成一卷山河。<br>循着足迹，读一段历史，留一份怀念。</p>
+        <a href="#journey" class="button primary">展开历史长卷 <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-inscription" aria-hidden="true">山河有忆<span>精神长存</span><i>寄思</i></div>
+      <div class="hero-bottom"><span>一份面向今天的历史阅读</span><a href="#journey">向下，走进岁月 <span aria-hidden="true">↓</span></a><span>数字纪念长卷 / 序</span></div>
+    </section>
+
+    <div class="chapter-index wrapper" aria-label="阅读路径">
+      <a href="#journey"><span>01</span><div><strong>循足迹</strong><small>走进历史的坐标</small></div><b aria-hidden="true">↗</b></a>
+      <a href="#poetry"><span>02</span><div><strong>读山河</strong><small>在诗词里遇见胸怀</small></div><b aria-hidden="true">↗</b></a>
+      <a href="#guide"><span>03</span><div><strong>问史料</strong><small>让每个问题有出处</small></div><b aria-hidden="true">↗</b></a>
+      <a href="#memory"><span>04</span><div><strong>寄思念</strong><small>写下属于你的回响</small></div><b aria-hidden="true">↗</b></a>
+    </div>
+
+    <section class="section wrapper" id="journey" aria-labelledby="journey-heading">
+      <div class="section-heading"><div><p class="eyebrow">CHAPTER 01 <span class="dash"></span> 循足迹</p><h2 id="journey-heading">足迹所至，皆是来路。</h2></div><p>从韶山出发，走进时代深处。<br>选择一个年份，展开这一页历史。</p></div>
+      <div class="timeline-tabs" id="timeline-tabs" role="tablist" aria-label="历史年份"></div>
+      <article class="journey-panel" id="journey-panel" role="tabpanel" tabindex="0" aria-labelledby="year-1893">
+        <div class="journey-art"><img src="assets/landscape.svg" alt="山水意境插画，非历史场景复原" width="1600" height="860" loading="lazy"><span class="place-mark" id="journey-place">湖南 · 韶山</span><strong id="journey-year">1893</strong><span class="art-note">山水意境 · 非历史影像</span></div>
+        <div class="journey-copy"><p class="red-label" id="journey-kicker">故事的起点</p><h3 id="journey-title">韶山，一切从这里开始</h3><p id="journey-text">1893年12月26日，毛泽东出生于湖南湘潭韶山。这里是他人生足迹的起点。</p><p class="reading-note" id="journey-note">阅读提示：从出生地进入人物生平，再沿时间轴了解不同阶段。</p><div class="journey-actions"><a class="text-link" id="journey-source" href="https://dangshi.people.com.cn/n/2013/1202/c85037-23714540.html" target="_blank" rel="noopener noreferrer">查阅史料原文 ↗</a><button class="bookmark" id="bookmark" aria-pressed="false">＋ 加入阅读手记</button></div><div class="journey-paging"><span id="journey-position">01 / 06</span><div><button id="previous-year" aria-label="上一个年份">←</button><button id="next-year" aria-label="下一个年份">→</button></div></div></div>
+      </article>
+      <p class="section-footnote">这是六个历史节点的选读，非完整生平。更多历史背景与评价，可通过<a href="https://cpc.people.com.cn/daohang/n/2013/0227/c357212-20620790.html" target="_blank" rel="noopener noreferrer">人物生平资料 ↗</a>继续阅读。</p>
+    </section>
+
+    <section class="poetry-section section" id="poetry" aria-labelledby="poetry-heading">
+      <div class="wrapper"><div class="section-heading"><div><p class="eyebrow">CHAPTER 02 <span class="dash"></span> 读山河</p><h2 id="poetry-heading">诗行之间，自有山河。</h2></div><p>读诗，也读写下诗句的时代。<br>三段诗词节选，三种山河意境。</p></div>
+        <div class="poetry-layout"><div class="poem-list" id="poem-tabs" role="tablist" aria-label="诗词选择" aria-orientation="vertical"></div><article class="poem-panel" id="poem-panel" role="tabpanel" tabindex="0" aria-labelledby="poem-tab-changsha"><div class="poem-visual"><span class="poem-seal" aria-hidden="true">诗中<br>山河</span><p class="poem-year" id="poem-year">一九二五年 · 秋</p><blockquote id="poem-quote">独立寒秋，<br>湘江北去，<br>橘子洲头。</blockquote><span class="poem-credit" id="poem-credit">毛泽东《沁园春·长沙》节选</span><div class="poem-visual-line" aria-hidden="true"></div></div><div class="poem-context"><span class="red-label">读诗手记</span><h3 id="poem-context-title">在湘江边，读懂青春的追问</h3><p id="poem-context-text"></p><div class="poem-context-footer"><a class="text-link" id="poem-source" target="_blank" rel="noopener noreferrer">查看原文与背景 ↗</a><button id="read-poem" class="sound-button" aria-pressed="false">▷ 设备朗读</button></div></div></article></div>
+      </div>
+    </section>
+
+    <section class="section wrapper guide-section" id="guide" aria-labelledby="guide-heading">
+      <div class="guide-intro"><p class="eyebrow">CHAPTER 03 <span class="dash"></span> 问史料</p><h2 id="guide-heading">带着问题，<br>再读一次历史。</h2><p>让好奇有回应，让阅读有依据。<br>从足迹、诗词与时代背景中，<br>找到继续探索的线索。</p><div class="guide-emblem" aria-hidden="true"><span>问</span><i>以史为据<br>循文而读</i></div><p class="small-copy">每次回复附资料链接。<br>尚未收录的内容，会如实告诉你。</p></div>
+      <div class="guide-box"><div class="guide-topline"><div><span class="status-dot"></span><strong>山河 · 史料助手</strong></div><span id="guide-mode">资料检索模式</span></div><div id="conversation" class="conversation" role="log" aria-live="polite" aria-relevant="additions"><div class="message assistant"><span class="message-label">山河 · 阅读向导</span><p>你好，我们从哪一页开始？你可以询问某个历史节点，也可以从一首诗的创作背景读起。</p><p class="message-hint">当前可检索本站收录的六个历史节点与三篇诗词资料。</p></div></div><div class="suggestions" id="suggestions"><button data-question="《沁园春·长沙》的创作背景是什么？">《沁园春·长沙》的创作背景</button><button data-question="1935年有什么重要历史节点？">走进 1935 年</button><button data-question="毛泽东出生在哪里？">从韶山开始阅读</button></div><form id="question-form"><label class="sr-only" for="question">输入史料问题</label><div class="question-input"><input id="question" name="question" maxlength="300" required autocomplete="off" placeholder="问一段历史，或一首诗……"><button id="send-question" type="submit" aria-label="发送问题">↑</button></div><p id="guide-status" role="status">基于本站资料检索 · 点击来源可核对原文</p></form></div>
+    </section>
+
+    <section class="memory-section section" id="memory" aria-labelledby="memory-heading"><div class="wrapper memory-layout"><div class="memory-copy"><p class="eyebrow">CHAPTER 04 <span class="dash"></span> 寄思念</p><h2 id="memory-heading">把怀念，<br>写给这片山河。</h2><p>一段阅读，一点感悟，一份跨越时光的思念。<br>写下此刻的话，留在自己的纪念卡上。</p><form id="memory-form"><label for="memory-message">你的寄语 <span id="message-count">0 / 100</span></label><textarea id="memory-message" maxlength="100" rows="4" placeholder="可以写下触动你的故事，或你想对未来说的话……" required></textarea><div class="signature-line"><label for="memory-name">落款</label><input id="memory-name" maxlength="12" placeholder="一位读者" autocomplete="off"></div><div class="memory-buttons"><button class="button primary" type="submit">生成我的纪念卡 <span aria-hidden="true">↗</span></button><button class="text-link" id="download-card" type="button" disabled>下载图片 ↓</button></div><p class="small-copy" id="memory-status" role="status">寄语仅保存在当前浏览器，不会公开发布。</p></form></div><div class="card-stage"><div class="card-corner top-left" aria-hidden="true"></div><div class="card-corner bottom-right" aria-hidden="true"></div><canvas id="memory-canvas" width="900" height="1200" role="img" aria-label="纪念卡预览：山河寄思，等待你的寄语"></canvas><span class="card-caption">一纸寄思 · 留作珍藏</span></div></div></section>
+
+    <section class="notebook wrapper" aria-labelledby="notebook-heading"><div><p class="eyebrow">MY READING NOTES</p><h2 id="notebook-heading">我的阅读手记 <span id="bookmark-count">00</span></h2></div><div id="bookmark-list"><p>在足迹长卷中收藏一个节点，让阅读留下足迹。</p></div></section>
+  </main>
+  <footer class="site-footer wrapper"><a href="#home" class="footer-brand">山河寄思<span>山河有忆，来路有光。</span></a><div><button class="text-link" data-open-sources>史料与创作说明 ↗</button><p>历史选读 · 诗词品读 · 数字纪念</p></div><a href="#home" class="back-top" aria-label="返回顶部">↑</a></footer>
+  <dialog id="sources-dialog" aria-labelledby="sources-title"><div class="dialog-head"><div><p class="eyebrow">READ THE SOURCES</p><h2 id="sources-title">史料与创作说明</h2></div><button id="close-sources" aria-label="关闭史料索引">×</button></div><p>本站历史内容为资料摘要，诗词仅作短句节选。资料整理日期：2026年11月5日。阅读时请结合原文与完整历史背景。</p><ol id="source-list"></ol><div class="creation-note"><h3>关于这卷山河</h3><p>页面山水为本项目原创 SVG 意境插画，并非历史影像或真实地理地图。设备朗读使用浏览器语音，不模拟人物原声。寄语和阅读手记仅保存在本机。</p><p>史料助手在资料检索模式下展示已收录内容；接通服务端模型后才会标识“AI 辅助解读”。AI 解读不作为史料原文。</p></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript-note">启用 JavaScript 可体验时间轴、史料问答与纪念卡。你仍可阅读首页及第一段史料，并通过原文链接继续阅读。</div></noscript>
+</body>
+</html>

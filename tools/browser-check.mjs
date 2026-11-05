@@ -13,7 +13,7 @@ try{
  const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));
  page.on('console',message=>{if(message.type()==='error'&&!message.text().includes('404'))errors.push(message.text());});
  await page.setViewport({width:1440,height:1000,deviceScaleFactor:1});
- await page.goto('http://127.0.0.1:8790/',{waitUntil:'networkidle0'});
+ await page.goto('http://127.0.0.1:8790/long-scroll.html',{waitUntil:'networkidle0'});
  await page.screenshot({path:path.join(out,'desktop.png'),fullPage:true});
  assert.equal(await page.title(),'山河寄思 · 纪念毛泽东同志');checks.push('desktop loaded');
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);checks.push('desktop has no horizontal overflow');
@@ -29,10 +29,10 @@ try{
  let downloaded=false;for(let i=0;i<20;i++){if((await fs.readdir(out)).some(f=>f.endsWith('.png')&&f.startsWith('山河寄思-'))){downloaded=true;break;}await new Promise(r=>setTimeout(r,150));}assert.ok(downloaded);checks.push('PNG downloaded');
  await page.reload({waitUntil:'networkidle0'});assert.match(await page.$eval('#memory-message',e=>e.value),/勇气与责任/);checks.push('card text persists');
  await page.click('[data-open-sources]');assert.equal(await page.$eval('#sources-dialog',e=>e.open),true);await page.keyboard.press('Escape');assert.equal(await page.$eval('#sources-dialog',e=>e.open),false);checks.push('sources dialog and escape');
- await page.setViewport({width:390,height:844,deviceScaleFactor:1});await page.goto('http://127.0.0.1:8790/',{waitUntil:'networkidle0'});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.screenshot({path:path.join(out,'mobile.png'),fullPage:true});checks.push('390px responsive');
+ await page.setViewport({width:390,height:844,deviceScaleFactor:1});await page.goto('http://127.0.0.1:8790/long-scroll.html',{waitUntil:'networkidle0'});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.screenshot({path:path.join(out,'mobile.png'),fullPage:true});checks.push('390px responsive');
  await page.click('#menu-toggle');assert.equal(await page.$eval('#menu-toggle',e=>e.getAttribute('aria-expanded')),'true');await page.click('#main-nav a[href="#memory"]');assert.equal(await page.$eval('#menu-toggle',e=>e.getAttribute('aria-expanded')),'false');checks.push('mobile menu');
  await page.setViewport({width:320,height:700,deviceScaleFactor:1});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);checks.push('320px has no overflow');
- const offline=await browser.newPage();offline.on('pageerror',e=>errors.push(e.message));await offline.goto(pathToFileURL(path.join(root,'dist/index.html')).href,{waitUntil:'load'});await offline.click('[data-question="毛泽东出生在哪里？"]');await offline.waitForFunction(()=>document.querySelectorAll('.answer-sources a').length>0);checks.push('file mode retrieval');
+ const offline=await browser.newPage();offline.on('pageerror',e=>errors.push(e.message));await offline.goto(pathToFileURL(path.join(root,'dist/long-scroll.html')).href,{waitUntil:'load'});await offline.click('[data-question="毛泽东出生在哪里？"]');await offline.waitForFunction(()=>document.querySelectorAll('.answer-sources a').length>0);checks.push('file mode retrieval');
  assert.deepEqual(errors,[]);checks.push('no JavaScript or CSP errors');
  await fs.writeFile(path.join(out,'browser-results.json'),JSON.stringify({passed:checks.length,checks,errors},null,2));console.log(JSON.stringify({passed:checks.length,checks,errors},null,2));
 }finally{await browser.close();}

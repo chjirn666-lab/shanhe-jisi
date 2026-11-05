@@ -81,5 +81,8 @@
   $('memory-form').addEventListener('submit',e=>{e.preventDefault();const message=$('memory-message').value.trim();if(!message){toast('请先写下一句寄语。');$('memory-message').focus();return;}if(!ctx){toast('当前浏览器不支持图片绘制，请更换浏览器。');return;}state.message=message;state.name=$('memory-name').value.trim();state.created=localDate();const saved=persist();paintCard(state.message,state.name,state.created);renderedCard={message:state.message,name:state.name,date:state.created};$('download-card').disabled=false;$('memory-status').textContent=saved?'纪念卡已生成，寄语已保存在当前浏览器。':'纪念卡已生成，浏览器存储不可用，请下载保存。';toast('你的纪念卡已生成');});
   $('download-card').addEventListener('click',()=>{if(!renderedCard)return;canvas.toBlob(blob=>{if(!blob){toast('图片生成失败，请重试。');return;}const url=URL.createObjectURL(blob);const a=node('a');a.href=url;a.download='山河寄思-我的纪念卡.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);toast('纪念卡图片已准备下载');},'image/png');});
   $('memory-message').value=state.message;$('memory-name').value=state.name;$('message-count').textContent=state.message.length+' / 100';paintCard(state.message,state.name,state.created);if(state.message&&ctx){renderedCard={message:state.message,name:state.name,date:state.created};$('download-card').disabled=false;$('memory-status').textContent='已恢复此浏览器上次保存的寄语。';}else if(!storageAvailable)$('memory-status').textContent='浏览器存储不可用，生成后请下载纪念卡保存。';
-  renderEvent(0);renderPoem(0);renderNotebook();checkApi();
+  const pageParams=new URLSearchParams(location.search);
+  const eventIndex=data.events.findIndex(e=>e.id===pageParams.get('event'));
+  const poemIndex=data.poems.findIndex(p=>p.id===pageParams.get('poem'));
+  renderEvent(eventIndex<0?0:eventIndex);renderPoem(poemIndex<0?0:poemIndex);renderNotebook();checkApi();
 })();
