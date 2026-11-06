@@ -232,7 +232,7 @@
             row.dataset.event = event.id;
             const year = element('span', event.year, 'result-year'); year.append(element('small',read.includes(event.id)?'已读':'历史节点'));
             const copy = element('div');
-            copy.append(element('strong',event.title),element('span',places[event.id]+' · '+event.label,'map-result-meta'),element('p',event.text));
+            copy.append(element('strong',event.title),element('span',places[event.id]+' · '+event.label,'map-result-meta'),element('p',event.summary || event.text));
             row.append(year,copy,icon('fa-angle-right'));
             $('map-results').append(row);
         });
@@ -294,7 +294,7 @@
                 const favorite=button(undefined,'icon-btn'+(bookmarks.includes(item.id)?' active':''),()=>toggleBookmark(item.id));favorite.dataset.bookmark=item.id;favorite.setAttribute('aria-label',(bookmarks.includes(item.id)?'取消收藏':'收藏')+item.title);favorite.setAttribute('aria-pressed',String(bookmarks.includes(item.id)));favorite.append(icon('fa-bookmark'));
                 actions.append(button('阅读故事 →','btn btn-outline',()=>showStory(item.id)),favorite);
             }
-            body.append(head,element('p',item.text,'spot-summary'),tags,actions);card.append(cover,body);$('story-cards').append(card);
+            body.append(head,element('p',item.summary || item.text,'spot-summary'),tags,actions);card.append(cover,body);$('story-cards').append(card);
         });
     }
     function selectTab(id) {

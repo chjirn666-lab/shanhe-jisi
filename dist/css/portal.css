@@ -18,6 +18,53 @@ html[data-theme="dark"] .spot-card-cover{background:#f3efe5}
 .history-photo--scene img {
     object-fit: contain;
 }
+.biography-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+.biography-grid article {
+    padding: 24px;
+    border-top: 3px solid var(--primary-color);
+}
+.biography-grid h3 {
+    font-size: 18px;
+    line-height: 1.7;
+    margin: 9px 0 12px;
+}
+.biography-grid p {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--dark-color);
+}
+.biography-grid p + p {
+    margin-top: 12px;
+}
+.biography-footnote {
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--gray-color);
+}
+.biography-footnote a, .biography-link {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.biography-link {
+    display: inline-block;
+    margin-top: 6px;
+}
+.story-body {
+    white-space: pre-line;
+}
+@media (max-width: 760px) {
+    .biography-grid {
+        grid-template-columns: 1fr;
+    }
+    .biography-grid article {
+        padding: 18px;
+    }
+}
 .topic-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }

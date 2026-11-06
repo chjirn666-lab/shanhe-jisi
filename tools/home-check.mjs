@@ -22,7 +22,7 @@ try{
  await gallery.screenshot({path:path.join(out,'homepage-photo-archive.png')});
  await page.waitForFunction(() => Array.from(document.querySelectorAll('.history-photo img')).every(img => img.complete && img.naturalWidth > 0));
  assert.equal(await page.$$eval('.history-photo img',items=>items.length),6);
- assert.equal(await page.$$eval('.life-overview:not(.history-topics) article',items=>items.length),4);
+ assert.equal(await page.$$eval('.life-overview:not(.history-topics) article',items=>items.length),10);
  assert.equal(await page.$$eval('.history-topics article',items=>items.length),3);checks.push('六张历史照片加载和生平专题展示');
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);checks.push('桌面首屏、6个足迹、6张推荐卡片与无横向溢出');
  await page.type('#map-search','遵义');
@@ -51,7 +51,7 @@ try{
  const actionButtons=await page.$$('.notebook-item button');await actionButtons[1].click();
  assert.equal(await page.$eval('#favorite-count',e=>e.textContent),'0');
  await page.click('.notebook-item button:last-child');assert.equal(await page.$eval('#read-count',e=>e.textContent),'0');assert.match(await page.$eval('#notebook-items',e=>e.textContent),/还没有/);await page.keyboard.press('Escape');checks.push('阅读手记中可移除收藏和撤销已读');
- await page.click('[data-open-sources]');assert.equal(await page.$$eval('#source-list li',e=>e.length),8);await page.keyboard.press('Escape');checks.push('史料索引弹窗');
+ await page.click('[data-open-sources]');assert.equal(await page.$$eval('#source-list li',e=>e.length),14);await page.keyboard.press('Escape');checks.push('史料索引弹窗');
  await page.click('#theme-toggle');assert.equal(await page.$eval('html',e=>e.dataset.theme),'dark');await page.reload({waitUntil:'networkidle0'});assert.equal(await page.$eval('html',e=>e.dataset.theme),'dark');await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.screenshot({path:path.join(out,'homepage-dark.png'),fullPage:true});await page.click('#theme-toggle');checks.push('深色模式及偏好保存');
  await page.setViewport({width:390,height:844,deviceScaleFactor:1});await page.goto(base,{waitUntil:'networkidle0'});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await page.screenshot({path:path.join(out,'homepage-mobile.png'),fullPage:true});await page.click('#mobile-menu-btn');assert.equal(await page.$eval('#mobile-menu-btn',e=>e.getAttribute('aria-expanded')),'true');await page.click('#nav-links a[href="#my-reading"]');assert.equal(await page.$eval('#mobile-menu-btn',e=>e.getAttribute('aria-expanded')),'false');checks.push('390px手机布局与菜单');
