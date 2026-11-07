@@ -18,3 +18,5 @@ dialog{width:min(680px,calc(100% - 32px));max-height:85svh;border:1px solid var(
 @media(max-width:800px){.guide-intro h2 br,.memory-copy h2 br{display:initial}.journey-art .place-mark{writing-mode:horizontal-tb;top:22px;left:25px;font-size:16px;letter-spacing:4px}.poem-panel[data-poem="march"] blockquote{font-size:26px;letter-spacing:3px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 #journey-text{white-space:pre-line}
+
+@media(max-width:800px){.poem-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}}

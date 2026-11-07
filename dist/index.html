@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/portal-map.css">
     <link rel="stylesheet" href="css/fontawesome.all.min.css">
     <link rel="stylesheet" href="css/portal.css">
+    <link rel="stylesheet" href="css/library.css">
     <script defer src="js/knowledge.js"></script>
     <script defer src="js/home.js"></script>
 </head>
@@ -25,7 +26,8 @@
                 <ul class="nav-links" id="nav-links">
                     <li><a class="active" href="index.html" aria-current="page"><i class="fas fa-home" aria-hidden="true"></i> 首页</a></li>
                     <li><a href="#home-map"><i class="fas fa-map-location-dot" aria-hidden="true"></i> 生平足迹</a></li>
-                    <li><a href="long-scroll.html#poetry"><i class="fas fa-book-open" aria-hidden="true"></i> 诗词品读</a></li>
+                    <li><a href="poetry.html"><i class="fas fa-book-open" aria-hidden="true"></i> 毛主席诗词</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-quote-left" aria-hidden="true"></i> 毛主席语录</a></li>
                     <li><button class="nav-action" data-open-sources><i class="fas fa-circle-check" aria-hidden="true"></i> 史料索引</button></li>
                     <li><a href="long-scroll.html#guide"><i class="fas fa-robot" aria-hidden="true"></i> 山河问答</a></li>
                     <li><a href="#my-reading"><i class="fas fa-bookmark" aria-hidden="true"></i> 我的阅读</a></li>
@@ -75,6 +77,11 @@
         </section>
         <!-- 对应原首页数据概览，数字与实际收录内容同步。 -->
         <div class="hero-stats" id="home-stats" aria-label="本站内容概览"></div>
+
+        <section class="literature-portals" id="literature" aria-label="毛主席诗词与语录">
+            <article class="literature-portal" data-mark="诗"><span>POETRY · 诗词馆</span><h2>毛主席诗词</h2><p>从湘江秋色到北国风光，六首作品，读诗中的山河，也读写诗的年代。</p><blockquote>独立寒秋，湘江北去，橘子洲头。<small>毛泽东《沁园春·长沙》节选</small></blockquote><div class="portal-reading-links"><a href="poetry.html?entry=snow">沁园春·雪</a><a href="poetry.html?entry=march">七律·长征</a><a href="poetry.html?entry=plum">卜算子·咏梅</a></div><a class="btn btn-outline" href="poetry.html">进入诗词馆 →</a></article>
+            <article class="literature-portal" data-mark="言"><span>QUOTATIONS · 语录馆</span><h2>毛主席语录</h2><p>按调查、学习和责任等主题，查阅六则节选的出处、时间与历史语境。</p><blockquote>没有调查，没有发言权。<small>毛泽东《反对本本主义》节选</small></blockquote><div class="portal-reading-links"><a href="quotes.html?entry=investigate">调查与实践</a><a href="quotes.html?entry=learn">学习与修养</a><a href="quotes.html?entry=serve-people">人民与责任</a></div><a class="btn btn-outline" href="quotes.html">进入语录馆 →</a></article>
+        </section>
         <section class="history-photos" id="history-photos" aria-labelledby="history-photos-title">
             <div class="section-intro"><div><span>PHOTO ARCHIVE</span><h2 id="history-photos-title">毛泽东历史照片</h2><p>从1931年的人物照到1972年的会见记录。每张照片附有档案出处和使用说明。</p></div><a href="https://commons.wikimedia.org/wiki/Category:Mao_Zedong" target="_blank" rel="noopener noreferrer">查看更多档案 ↗</a></div>
             <div class="photo-grid">
@@ -220,10 +227,10 @@
     </main>
     <footer id="site-footer"><div class="container"><div class="footer-content">
         <div class="footer-section"><h3><i class="fas fa-mountain-sun" aria-hidden="true"></i> 山河寄思</h3><p>纪念毛泽东同志的历史阅读与数字纪念平台。循着足迹读历史，在诗词中读山河，让怀念成为一次有出处的阅读。</p></div>
-        <div class="footer-section"><h3>快速链接</h3><ul><li><a href="#home-map">生平足迹</a></li><li><a href="long-scroll.html#poetry">诗词品读</a></li><li><a href="long-scroll.html#guide">山河问答</a></li><li><a href="long-scroll.html#memory">纪念寄语</a></li></ul></div>
+        <div class="footer-section"><h3>快速链接</h3><ul><li><a href="#home-map">生平足迹</a></li><li><a href="poetry.html">毛主席诗词</a></li><li><a href="quotes.html">毛主席语录</a></li><li><a href="long-scroll.html#guide">山河问答</a></li><li><a href="long-scroll.html#memory">纪念寄语</a></li></ul></div>
         <div class="footer-section"><h3>阅读地点</h3><ul class="footer-city-list" id="footer-places"></ul></div>
         <div class="footer-section"><h3>阅读说明</h3><p>本站为历史选读，非完整传记。历史照片标注了来源；山水和书卷插画为意境创作。</p><button class="footer-source" data-open-sources>查看史料与资源说明 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></button></div>
-    </div><div class="footer-bottom"><p>山河寄思 · 循历史足迹，寄山河深情　|　资料整理日期：2026年11月6日</p></div></div></footer>
+    </div><div class="footer-bottom"><p>山河寄思 · 循历史足迹，寄山河深情　|　资料整理日期：2026年11月7日</p></div></div></footer>
     <dialog id="story-dialog" class="portal-dialog" aria-labelledby="story-title">
         <div class="dialog-top"><span class="dialog-eyebrow" id="story-meta"></span><button class="dialog-close" data-close-dialog aria-label="关闭历史详情"><i class="fas fa-xmark" aria-hidden="true"></i></button></div>
         <h2 id="story-title"></h2><p class="story-body" id="story-text"></p><p class="story-note" id="story-note"></p><div class="story-sources"><h3><i class="fas fa-circle-check" aria-hidden="true"></i> 史料出处</h3><ul id="story-sources"></ul></div>

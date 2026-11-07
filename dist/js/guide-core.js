@@ -2,7 +2,7 @@
   'use strict';
   const data = root.SHANHE;
   function normalize(value) { return String(value).toLowerCase().replace(/[\s《》·，。？?、！!：:]/g,''); }
-  const entries = [...data.events.map(e=>({...e,type:'历史节点'})),...data.poems.map(p=>({...p,type:'诗词背景'}))];
+  const entries = [...data.events.map(e=>({...e,type:'历史节点'})),...data.poems.map(p=>({...p,type:'诗词背景'})),...data.quotes.map(q=>({...q,type:'语录出处',text:q.quote+'\n出处：'+q.work+'（'+q.season+'）。\n'+q.text}))];
   function retrieve(question) {
     const q = normalize(question);
     if (!q) return [];

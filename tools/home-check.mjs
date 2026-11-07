@@ -40,7 +40,7 @@ try{
  await page.keyboard.press('Escape');await page.reload({waitUntil:'networkidle0'});
  assert.equal(await page.$eval('#favorite-count',e=>e.textContent),'1');assert.equal(await page.$eval('#read-count',e=>e.textContent),'1');checks.push('收藏和已读记录刷新后恢复');
  await page.click('[data-category="revolution"]');assert.equal(await page.$$eval('.spot-card',items=>items.length),2);
- await page.click('[data-category="poetry"]');assert.equal(await page.$$eval('.spot-card',items=>items.length),3);
+ await page.click('[data-category="poetry"]');assert.equal(await page.$$eval('.spot-card',items=>items.length),6);
  await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click('.spot-card:nth-child(2) .spot-card-cover')]);
  assert.match(await page.$eval('#poem-credit',e=>e.textContent),/娄山关/);checks.push('主题筛选与诗词卡片准确跳转到对应篇目');
  await page.goto(base+'long-scroll.html?event=1935#journey',{waitUntil:'networkidle0'});assert.equal(await page.$eval('#journey-year',e=>e.textContent),'1935');
@@ -51,7 +51,7 @@ try{
  const actionButtons=await page.$$('.notebook-item button');await actionButtons[1].click();
  assert.equal(await page.$eval('#favorite-count',e=>e.textContent),'0');
  await page.click('.notebook-item button:last-child');assert.equal(await page.$eval('#read-count',e=>e.textContent),'0');assert.match(await page.$eval('#notebook-items',e=>e.textContent),/还没有/);await page.keyboard.press('Escape');checks.push('阅读手记中可移除收藏和撤销已读');
- await page.click('[data-open-sources]');assert.equal(await page.$$eval('#source-list li',e=>e.length),14);await page.keyboard.press('Escape');checks.push('史料索引弹窗');
+ await page.click('[data-open-sources]');assert.equal(await page.$$eval('#source-list li',e=>e.length),23);await page.keyboard.press('Escape');checks.push('史料索引弹窗');
  await page.click('#theme-toggle');assert.equal(await page.$eval('html',e=>e.dataset.theme),'dark');await page.reload({waitUntil:'networkidle0'});assert.equal(await page.$eval('html',e=>e.dataset.theme),'dark');await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.screenshot({path:path.join(out,'homepage-dark.png'),fullPage:true});await page.click('#theme-toggle');checks.push('深色模式及偏好保存');
  await page.setViewport({width:390,height:844,deviceScaleFactor:1});await page.goto(base,{waitUntil:'networkidle0'});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await page.screenshot({path:path.join(out,'homepage-mobile.png'),fullPage:true});await page.click('#mobile-menu-btn');assert.equal(await page.$eval('#mobile-menu-btn',e=>e.getAttribute('aria-expanded')),'true');await page.click('#nav-links a[href="#my-reading"]');assert.equal(await page.$eval('#mobile-menu-btn',e=>e.getAttribute('aria-expanded')),'false');checks.push('390px手机布局与菜单');
