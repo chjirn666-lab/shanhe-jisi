@@ -5,11 +5,29 @@
   const $=id=>document.getElementById(id);
   const storeKey='shanhe-jisi-v1';
   let state={bookmarks:[],message:'',name:'',created:''},storageAvailable=true;
-  try {
-    const saved=JSON.parse(localStorage.getItem(storeKey)||'null');
-    if(saved&&typeof saved==='object') state={bookmarks:Array.isArray(saved.bookmarks)?saved.bookmarks.filter(id=>data.events.some(e=>e.id===id)):[],message:typeof saved.message==='string'?saved.message.slice(0,100):'',name:typeof saved.name==='string'?saved.name.slice(0,12):'',created:typeof saved.created==='string'?saved.created.slice(0,30):''};
-  }catch{storageAvailable=false;}
-  function persist(){try{localStorage.setItem(storeKey,JSON.stringify(state));return true;}catch{storageAvailable=false;return false;}}
+  function sanitize(saved){
+    if(!saved||typeof saved!=='object'||Array.isArray(saved))return null;
+    return {
+      bookmarks:Array.isArray(saved.bookmarks)?[...new Set(saved.bookmarks.filter(id=>data.events.some(e=>e.id===id)))]:[],
+      message:typeof saved.message==='string'?saved.message.slice(0,100):'',
+      name:typeof saved.name==='string'?saved.name.slice(0,12):'',
+      created:typeof saved.created==='string'?saved.created.slice(0,30):''
+    };
+  }
+  try{const parsed=sanitize(JSON.parse(localStorage.getItem(storeKey)||'null'));if(parsed)state=parsed;}catch{storageAvailable=false;}
+  function persist(){
+    try{
+      // 首页与长卷共用同一个存储键，写入前保留其它页面新增的字段，避免覆盖寄语或收藏。
+      const latest=sanitize(JSON.parse(localStorage.getItem(storeKey)||'null'));
+      if(latest)for(const key of Object.keys(latest))if(!Object.hasOwn(state,key))state[key]=latest[key];
+      localStorage.setItem(storeKey,JSON.stringify(state));return true;
+    }catch{storageAvailable=false;return false;}
+  }
+  window.addEventListener('storage',event=>{
+    if(event.key!==storeKey)return;
+    try{const latest=sanitize(JSON.parse(localStorage.getItem(storeKey)||'null'));if(latest)state.bookmarks=latest.bookmarks;}catch{}
+    renderBookmarkButton();renderNotebook();
+  });
   let toastTimer;
   function toast(message){$('toast').textContent=message;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3000);}
   function node(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
@@ -45,9 +63,8 @@
   data.poems.forEach((poem,index)=>{const button=node('button');button.type='button';button.id='poem-tab-'+poem.id;button.setAttribute('role','tab');button.setAttribute('aria-controls','poem-panel');button.append(node('span',String(index+1).padStart(2,'0')));const label=node('div');label.append(node('strong',poem.title),node('small',poem.label));button.append(label);button.addEventListener('click',()=>renderPoem(index));$('poem-tabs').append(button);});
   let speaking=false;
   function stopSpeech(){if('speechSynthesis'in window)window.speechSynthesis.cancel();speaking=false;$('read-poem').textContent='▷ 设备朗读';$('read-poem').setAttribute('aria-pressed','false');}
-  function renderPoem(index){stopSpeech();activePoem=index;const p=data.poems[index];Array.from($('poem-tabs').children).forEach((b,i)=>{b.setAttribute('aria-selected',String(i===index));b.tabIndex=i===index?0:-1;});$('poem-panel').setAttribute('aria-labelledby','poem-tab-'+p.id);$('poem-year').textContent=p.season;$('poem-quote').replaceChildren();p.quote.split('\n').forEach((line,i)=>{if(i)$('poem-quote').append(document.createElement('br'));$('poem-quote').append(document.createTextNode(line));});$('poem-credit').textContent='毛泽东《'+p.title+'》节选';$('poem-context-title').textContent=p.heading;$('poem-context-text').textContent=p.text;$('poem-source').href=sourceById(p.sources[0]).url;animate($('poem-panel'));}
+  function renderPoem(index){stopSpeech();activePoem=index;const p=data.poems[index];Array.from($('poem-tabs').children).forEach((b,i)=>{b.setAttribute('aria-selected',String(i===index));b.tabIndex=i===index?0:-1;});$('poem-panel').setAttribute('aria-labelledby','poem-tab-'+p.id);$('poem-panel').dataset.poem=p.id;$('poem-year').textContent=p.season;$('poem-quote').replaceChildren();p.quote.split('\n').forEach((line,i)=>{if(i)$('poem-quote').append(document.createElement('br'));$('poem-quote').append(document.createTextNode(line));});$('poem-credit').textContent='毛泽东《'+p.title+'》节选';$('poem-context-title').textContent=p.heading;$('poem-context-text').textContent=p.text;$('poem-source').href=sourceById(p.sources[0]).url;animate($('poem-panel'));}
   keyboardTabs($('poem-tabs'),()=>activePoem,renderPoem,data.poems.length,true);
-  new MutationObserver(()=>{$('poem-panel').dataset.poem=data.poems[activePoem].id;}).observe($('poem-panel'),{attributes:true,attributeFilter:['aria-labelledby']});
   $('read-poem').addEventListener('click',()=>{if(!('speechSynthesis'in window)){toast('当前浏览器不支持设备朗读，请阅读文字。');return;}if(speaking){stopSpeech();return;}const p=data.poems[activePoem];const utterance=new SpeechSynthesisUtterance(p.title+'。'+p.quote);utterance.lang='zh-CN';utterance.rate=.8;utterance.onend=stopSpeech;utterance.onerror=e=>{stopSpeech();if(e.error!=='canceled'&&e.error!=='interrupted')toast('朗读不可用，请检查设备中文语音支持。');};speaking=true;$('read-poem').textContent='□ 停止朗读';$('read-poem').setAttribute('aria-pressed','true');window.speechSynthesis.speak(utterance);});
   window.addEventListener('pagehide',stopSpeech);
   let apiReady=false,apiMode='retrieval',busy=false;

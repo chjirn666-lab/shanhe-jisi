@@ -20,3 +20,5 @@ dialog{width:min(680px,calc(100% - 32px));max-height:85svh;border:1px solid var(
 #journey-text{white-space:pre-line}
 
 @media(max-width:800px){.poem-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.poem-list{max-height:490px;overflow-y:auto;scrollbar-width:thin;align-content:start}.poem-list button{flex-shrink:0}@media(max-width:800px){.poem-list{max-height:260px;grid-template-columns:repeat(2,minmax(0,1fr))}}

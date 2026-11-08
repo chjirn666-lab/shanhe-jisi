@@ -6,3 +6,5 @@ node_modules/
 preview/
 *.log
 *.tar.gz
+release/
+.workbuddy/

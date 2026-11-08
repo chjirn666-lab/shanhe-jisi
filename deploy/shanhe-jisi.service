@@ -1,0 +1,23 @@
+[Unit]
+Description=Shanhe Jisi web and history assistant
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/shanhe-jisi
+Environment=NODE_ENV=production
+EnvironmentFile=-/opt/shanhe-jisi/.env
+ExecStart=/usr/bin/node /opt/shanhe-jisi/server.mjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=25
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

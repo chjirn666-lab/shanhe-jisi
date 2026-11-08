@@ -274,7 +274,7 @@
         $('story-cards').replaceChildren();
         const cat = categories.find(c => c.id === category);
         const poetry = category === 'poetry';
-        const items = poetry ? data.poems : data.events.filter(e => cat.ids.includes(e.id));
+        const items = poetry ? data.poems.slice(0,6) : data.events.filter(e => cat.ids.includes(e.id));
         $('featured-note').textContent = cat.name+' · '+items.length+' 篇选读。'+(poetry?'阅读节选、创作背景与资料出处。':'点击阅读摘要，也可收藏并标记阅读进度。');
         items.forEach((item,index) => {
             const card = element('article',undefined,'spot-card');

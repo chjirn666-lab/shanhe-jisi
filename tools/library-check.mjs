@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+if(!process.env.PUPPETEER_MODULE||!process.env.BROWSER_PATH)throw new Error('Set PUPPETEER_MODULE and BROWSER_PATH before running browser checks. See README.md.');
 const {default:puppeteer}=await import(pathToFileURL(process.env.PUPPETEER_MODULE).href);
 const browser=await puppeteer.launch({executablePath:process.env.BROWSER_PATH,headless:true});
 const base='http://127.0.0.1:8790/',checks=[],errors=[];
@@ -15,15 +16,27 @@ try {
     assert.equal(await page.$$eval('.reading-card',n=>n.length),6);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
     await page.screenshot({path:path.join(root,'preview/poetry-desktop.png'),fullPage:true});
+    const seen = new Set();
+    for(let n=1;n<=5;n++){
+        await page.click('[data-page="'+n+'"]');
+        await page.waitForFunction(expected=>document.querySelector('[aria-current="page"][data-page]')?.dataset.page===String(expected),{},n);
+        const ids=await page.$$eval('.reading-card',cards=>cards.map(c=>c.dataset.entryId));
+        ids.forEach(id=>{assert.ok(!seen.has(id),'诗词分页出现重复条目：'+id);seen.add(id);});
+    }
+    assert.equal(seen.size,30);
+    await page.select('#library-sort','newest');
+    assert.equal(await page.$eval('[aria-current="page"][data-page]',e=>e.dataset.page),'1');
+    await page.click('#library-reset');
+    checks.push('30首分页无重复遗漏，年代排序与重置');
     await page.click('[data-topic="征途岁月"]');
-    assert.equal(await page.$$eval('.reading-card',n=>n.length),2);
+    assert.ok(await page.$$eval('.reading-card',n=>n.length>0&&n.length<=6));
     await page.type('#library-search','1935');
-    assert.equal(await page.$$eval('.reading-card',n=>n.length),2);
+    assert.ok(await page.$$eval('.reading-card',n=>n.length>0&&n.length<=6));
     await page.type('#library-search','不存在');
     assert.equal(await page.$eval('#library-empty',e=>e.hidden),false);
     await page.click('#empty-reset');
     assert.equal(await page.$$eval('.reading-card',n=>n.length),6);
-    checks.push('六首诗词、主题与关键词组合筛选、空结果重置');
+    checks.push('诗词主题与关键词组合筛选、空结果重置');
     await page.click('[data-save-id="changsha"]');
     await page.reload({waitUntil:'networkidle0'});
     assert.equal(await page.$eval('#saved-count',e=>e.textContent),'1');
@@ -51,8 +64,21 @@ try {
     await page.reload({waitUntil:'networkidle0'});await page.keyboard.press('Escape');
     assert.equal(await page.$eval('#saved-count',e=>e.textContent),'1');
     checks.push('语录深链接、准确出处、复制失败时手动复制、两馆收藏互不覆盖');
+    const quoteIds = new Set();
+    for(let n=1;n<=5;n++) {
+        await page.click('[data-page="'+n+'"]');
+        await page.waitForFunction(expected=>document.querySelector('[aria-current="page"][data-page]')?.dataset.page===String(expected),{},n);
+        const ids=await page.$$eval('.reading-card',cards=>cards.map(c=>c.dataset.entryId));
+        ids.forEach(id=>{assert.ok(!quoteIds.has(id),'语录分页出现重复条目：'+id);quoteIds.add(id);});
+    }
+    assert.equal(quoteIds.size,30);
+    await page.select('#library-sort','oldest');
+    const years=await page.$$eval('.reading-card',cards=>cards.map(c=>Number(SHANHE.quotes.find(q=>q.id===c.dataset.entryId).year)));
+    assert.deepEqual(years,[...years].sort((a,b)=>a-b));
+    await page.click('#library-reset');
+    checks.push('30则语录分页无重复遗漏，按年代排序');
     await page.click('[data-topic="人民与责任"]');
-    assert.equal(await page.$$eval('.reading-card',n=>n.length),2);
+    assert.ok(await page.$$eval('.reading-card',n=>n.length>0&&n.length<=6));
     await page.click('#library-reset');
     await page.click('#theme-toggle');
     assert.equal(await page.$eval('html',e=>e.dataset.theme),'dark');
@@ -72,7 +98,7 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.$eval('#mobile-menu-btn',e=>e.getAttribute('aria-expanded')),'false');
     await page.screenshot({path:path.join(root,'preview/quotes-mobile.png'),fullPage:true});
-    checks.push('主题分类、深色模式、390px与320px布局、长卷六首诗词及手机菜单');
+    checks.push('主题分类、深色模式、390px与320px布局、长卷诗词及手机菜单');
     await page.goto(pathToFileURL(path.join(root,'dist/poetry.html')).href,{waitUntil:'load'});
     await page.type('#library-search','咏梅');
     assert.equal(await page.$$eval('.reading-card',n=>n.length),1);

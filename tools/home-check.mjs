@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+if(!process.env.PUPPETEER_MODULE||!process.env.BROWSER_PATH)throw new Error('Set PUPPETEER_MODULE and BROWSER_PATH before running browser checks. See README.md.');
 const {default:puppeteer}=await import(pathToFileURL(process.env.PUPPETEER_MODULE).href);
 const out=path.join(root,'preview');await fs.mkdir(out,{recursive:true});
 const browser=await puppeteer.launch({executablePath:process.env.BROWSER_PATH,headless:true,args:['--disable-gpu']});
@@ -51,7 +52,7 @@ try{
  const actionButtons=await page.$$('.notebook-item button');await actionButtons[1].click();
  assert.equal(await page.$eval('#favorite-count',e=>e.textContent),'0');
  await page.click('.notebook-item button:last-child');assert.equal(await page.$eval('#read-count',e=>e.textContent),'0');assert.match(await page.$eval('#notebook-items',e=>e.textContent),/还没有/);await page.keyboard.press('Escape');checks.push('阅读手记中可移除收藏和撤销已读');
- await page.click('[data-open-sources]');assert.equal(await page.$$eval('#source-list li',e=>e.length),23);await page.keyboard.press('Escape');checks.push('史料索引弹窗');
+ await page.click('[data-open-sources]');assert.equal(await page.$$eval('#source-list li',e=>e.length),await page.evaluate(()=>SHANHE.sources.length));await page.keyboard.press('Escape');checks.push('史料索引弹窗');
  await page.click('#theme-toggle');assert.equal(await page.$eval('html',e=>e.dataset.theme),'dark');await page.reload({waitUntil:'networkidle0'});assert.equal(await page.$eval('html',e=>e.dataset.theme),'dark');await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.screenshot({path:path.join(out,'homepage-dark.png'),fullPage:true});await page.click('#theme-toggle');checks.push('深色模式及偏好保存');
  await page.setViewport({width:390,height:844,deviceScaleFactor:1});await page.goto(base,{waitUntil:'networkidle0'});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await page.screenshot({path:path.join(out,'homepage-mobile.png'),fullPage:true});await page.click('#mobile-menu-btn');assert.equal(await page.$eval('#mobile-menu-btn',e=>e.getAttribute('aria-expanded')),'true');await page.click('#nav-links a[href="#my-reading"]');assert.equal(await page.$eval('#mobile-menu-btn',e=>e.getAttribute('aria-expanded')),'false');checks.push('390px手机布局与菜单');

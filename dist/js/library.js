@@ -60,16 +60,24 @@
         $('copy-fallback').hidden = true; $('copy-status').textContent = '';
         updateDialogSave(); $('reader-dialog').showModal();
     }
-    function render() {
+    let currentPage = 1;
+    const pageSize = 6;
+    function render(resetPage = false) {
+        if (resetPage) currentPage = 1;
         const focusId = document.activeElement?.dataset.saveId;
         const query = normalize($('library-search').value);
         const visible = items.filter(item => (!selectedTheme || item.theme === selectedTheme) &&
             (!$('only-saved').checked || saved.has(kind + ':' + item.id)) &&
             (!query || normalize([item.title,item.work || '',item.year,item.season,item.quote,item.text,...item.terms].join(' ')).includes(query)));
-        $('result-status').textContent = '找到 ' + visible.length + ' / ' + items.length + (kind === 'poetry' ? ' 首诗词' : ' 则语录');
+        const order = $('library-sort').value;
+        if(order !== 'featured') visible.sort((a,b)=>(Number(a.year)-Number(b.year))*(order==='oldest'?1:-1));
+        const pages = Math.max(1,Math.ceil(visible.length/pageSize));
+        currentPage = Math.min(currentPage,pages);
+        $('result-status').textContent = '找到 ' + visible.length + ' / ' + items.length + (kind === 'poetry' ? ' 首诗词' : ' 则语录') + ' · 第 ' + currentPage + ' / ' + pages + ' 页';
         $('saved-count').textContent = String(items.filter(item => saved.has(kind + ':' + item.id)).length);
-        $('library-grid').replaceChildren(...visible.map(item => {
+        $('library-grid').replaceChildren(...visible.slice((currentPage-1)*pageSize,currentPage*pageSize).map(item => {
             const card = el('article', undefined, 'reading-card');
+            card.dataset.entryId = item.id;
             const meta = el('div', undefined, 'reading-meta'); meta.append(el('span', item.theme), el('span', item.season));
             card.append(meta, el('h2', item.title), el('blockquote', item.quote, 'reading-excerpt'));
             card.append(el('p', kind === 'poetry' ? '毛泽东《' + item.title + '》节选' : '毛泽东 · ' + item.work, 'reading-credit'));
@@ -85,27 +93,33 @@
             actions.append(read, favorite, link); card.append(actions); return card;
         }));
         $('library-empty').hidden = visible.length > 0;
+        const pager = $('library-pagination'); pager.replaceChildren(); pager.hidden = pages <= 1;
+        for(let n=1;n<=pages;n++) {
+            const b=button(String(n),'page-button',()=>{currentPage=n;render();$('result-status').focus({preventScroll:true});$('library-collection').scrollIntoView({block:'start',behavior:'instant'});});
+            b.dataset.page=String(n);b.setAttribute('aria-label','第 '+n+' 页');if(n===currentPage)b.setAttribute('aria-current','page');pager.append(b);
+        }
         if (focusId) {
             const target = [...document.querySelectorAll('[data-save-id]')].find(b => b.dataset.saveId === focusId);
             (target || $('only-saved')).focus({preventScroll:true});
         }
     }
     function reset() {
-        selectedTheme = ''; $('library-search').value = ''; $('only-saved').checked = false;
+        selectedTheme = ''; $('library-search').value = ''; $('only-saved').checked = false; currentPage = 1; $('library-sort').value = 'featured';
         document.querySelectorAll('[data-topic]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.topic === '')));
         render();
     }
     ['', ...new Set(items.map(item => item.theme))].forEach(theme => {
         const b = button(theme || '全部主题', 'topic-filter', () => {
-            selectedTheme = theme;
+            selectedTheme = theme; currentPage = 1;
             document.querySelectorAll('[data-topic]').forEach(node => node.setAttribute('aria-pressed', String(node === b)));
             render();
         });
         b.dataset.topic = theme; b.setAttribute('aria-pressed', String(!theme)); $('theme-filters').append(b);
     });
-    $('library-search').addEventListener('input', render);
+    $('library-search').addEventListener('input', () => render(true));
     $('library-form').addEventListener('submit', event => event.preventDefault());
-    $('only-saved').addEventListener('change', render);
+    $('only-saved').addEventListener('change', () => render(true));
+    $('library-sort').addEventListener('change', () => render(true));
     $('library-reset').addEventListener('click', reset); $('empty-reset').addEventListener('click', reset);
     $('reader-close').addEventListener('click', () => $('reader-dialog').close());
     $('reader-dialog').addEventListener('close', () => {
