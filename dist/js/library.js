@@ -1,12 +1,13 @@
 (function () {
     'use strict';
     const data = globalThis.SHANHE;
+    const fullTexts = globalThis.SHANHE_POETRY_FULL?.poems || {};
     const kind = document.body.dataset.library;
     const items = kind === 'poetry' ? data.poems : data.quotes;
     const $ = id => document.getElementById(id);
     const key = 'shanhe-literature-v1';
     const validKeys = new Set([...data.poems.map(p => 'poetry:' + p.id), ...data.quotes.map(q => 'quotes:' + q.id)]);
-    let saved = new Set(), selectedTheme = '', selected = null, returnFocus = null;
+    let saved = new Set(), selectedTheme = '', selectedWork = '', selected = null, returnFocus = null;
     const normalize = value => String(value).toLowerCase().replace(/[\s《》·，。？?、！!：:]/g, '');
     function el(tag, text, className) {
         const node = document.createElement(tag);
@@ -57,6 +58,21 @@
             const source = data.sources.find(s => s.id === id), row = el('li');
             row.append(sourceLink(source), el('small', source.publisher)); return row;
         }));
+        // 诗词馆详情页展示完整原文；语录馆没有全篇区块，自动隐藏相关控件。
+        const fullSection = $('reader-fulltext-section'), copyFull = $('reader-copy-full'), full = fullTexts[item.id];
+        if (fullSection) {
+            const showFull = kind === 'poetry' && Boolean(full);
+            fullSection.hidden = !showFull;
+            if (copyFull) copyFull.hidden = !showFull;
+            if (showFull) {
+                $('reader-fulltext').textContent = full.fullText;
+                $('reader-fulltext-note').textContent = '原文依据公开资料逐首核对，异文按通行定本处理；分行只为便于阅读，不改动字句。';
+                $('reader-fulltext-links').replaceChildren(...full.references.map(ref => {
+                    const a = el('a', ref.title + ' ↗');
+                    a.href = ref.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; return a;
+                }));
+            }
+        }
         $('copy-fallback').hidden = true; $('copy-status').textContent = '';
         updateDialogSave(); $('reader-dialog').showModal();
     }
@@ -66,9 +82,9 @@
         if (resetPage) currentPage = 1;
         const focusId = document.activeElement?.dataset.saveId;
         const query = normalize($('library-search').value);
-        const visible = items.filter(item => (!selectedTheme || item.theme === selectedTheme) &&
+        const visible = items.filter(item => (!selectedWork || normalize(item.work||'')===normalize(selectedWork)) && (!selectedTheme || item.theme === selectedTheme) &&
             (!$('only-saved').checked || saved.has(kind + ':' + item.id)) &&
-            (!query || normalize([item.title,item.work || '',item.year,item.season,item.quote,item.text,...item.terms].join(' ')).includes(query)));
+            (!query || normalize([item.title,item.work || '',item.year,item.season,item.quote,item.text,fullTexts[item.id]?.fullText||'',...item.terms].join(' ')).includes(query)));
         const order = $('library-sort').value;
         if(order !== 'featured') visible.sort((a,b)=>(Number(a.year)-Number(b.year))*(order==='oldest'?1:-1));
         const pages = Math.max(1,Math.ceil(visible.length/pageSize));
@@ -83,7 +99,7 @@
             card.append(el('p', kind === 'poetry' ? '毛泽东《' + item.title + '》节选' : '毛泽东 · ' + item.work, 'reading-credit'));
             card.append(el('p', item.text, 'reading-context'));
             const actions = el('div', undefined, 'reading-actions');
-            const read = button(kind === 'poetry' ? '品读背景 →' : '阅读语境 →', 'btn btn-outline', () => openReader(item, read));
+            const read = button(kind === 'poetry' ? '品读背景与全篇 →' : '阅读语境 →', 'btn btn-outline', () => openReader(item, read));
             const favorite = button(saved.has(kind + ':' + item.id) ? '★ 已收藏' : '☆ 收藏', 'reading-save', () => toggleSaved(item));
             favorite.dataset.saveId = item.id;
             favorite.setAttribute('aria-label', '收藏：' + item.title);
@@ -104,7 +120,7 @@
         }
     }
     function reset() {
-        selectedTheme = ''; $('library-search').value = ''; $('only-saved').checked = false; currentPage = 1; $('library-sort').value = 'featured';
+        selectedTheme = ''; selectedWork = ''; $('library-search').value = ''; $('only-saved').checked = false; currentPage = 1; $('library-sort').value = 'featured';
         document.querySelectorAll('[data-topic]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.topic === '')));
         render();
     }
@@ -116,7 +132,7 @@
         });
         b.dataset.topic = theme; b.setAttribute('aria-pressed', String(!theme)); $('theme-filters').append(b);
     });
-    $('library-search').addEventListener('input', () => render(true));
+    $('library-search').addEventListener('input', () => {selectedWork='';render(true);});
     $('library-form').addEventListener('submit', event => event.preventDefault());
     $('only-saved').addEventListener('change', () => render(true));
     $('library-sort').addEventListener('change', () => render(true));
@@ -124,19 +140,37 @@
     $('reader-close').addEventListener('click', () => $('reader-dialog').close());
     $('reader-dialog').addEventListener('close', () => {
         if (returnFocus?.isConnected) returnFocus.focus({preventScroll:true});
-        else $('library-search').focus({preventScroll:true});
+        else {
+            const card=[...document.querySelectorAll('.reading-card')].find(card=>card.dataset.entryId===selected?.id);
+            (card?.querySelector('.reading-actions .btn')||$('library-search')).focus({preventScroll:true});
+        }
     });
     $('reader-save').addEventListener('click', () => toggleSaved(selected));
-    $('reader-copy').addEventListener('click', async () => {
-        const source = data.sources.find(s => s.id === selected.sources[0]);
-        const text = selected.quote + '\n——毛泽东' + (kind === 'poetry' ? '《' + selected.title + '》' : selected.work) + '（' + selected.season + '）节选\n资料：' + source.url;
+    async function copyWithFallback(text, doneMessage, label) {
         try {
             await navigator.clipboard.writeText(text);
-            $('copy-status').textContent = '已复制节选、篇名与来源。'; $('copy-fallback').hidden = true;
+            $('copy-status').textContent = doneMessage; $('copy-fallback').hidden = true;
         } catch {
-            $('copy-fallback').hidden = false; $('copy-text').value = text; $('copy-text').focus(); $('copy-text').select();
+            $('copy-fallback').hidden = false;
+            if ($('copy-fallback-label')) $('copy-fallback-label').textContent = label;
+            $('copy-text').value = text; $('copy-text').focus(); $('copy-text').select();
             $('copy-status').textContent = '浏览器未允许直接复制。可复制下方已选中的文字。';
         }
+    }
+    $('reader-copy').addEventListener('click', () => {
+        const source = data.sources.find(s => s.id === selected.sources[0]);
+        const text = selected.quote + '\n——毛泽东' + (kind === 'poetry' ? '《' + selected.title + '》' : selected.work) + '（' + selected.season + '）节选\n资料：' + source.url;
+        return copyWithFallback(text, '已复制节选、篇名与来源。', '节选与出处');
+    });
+    $('reader-copy-full')?.addEventListener('click', () => {
+        const full = fullTexts[selected.id];
+        if (!full) return;
+        const text = [
+            full.title, full.fullText, '', '——毛泽东《' + full.title + '》全篇', '',
+            '全文核对来源：', ...full.references.map(ref => ref.title + ' ' + ref.url), '',
+            '本站资料出处：', ...full.sources.map(s => s.title + ' ' + s.url)
+        ].join('\n');
+        return copyWithFallback(text, '已复制全篇、篇名与来源。', '全篇与出处');
     });
     function closeMenu() { $('nav-links').classList.remove('active'); $('mobile-menu-btn').setAttribute('aria-expanded', 'false'); }
     $('mobile-menu-btn').addEventListener('click', () => {
@@ -159,7 +193,13 @@
         try { localStorage.setItem('shanheTheme', theme); } catch {}
     });
     window.addEventListener('storage', event => { if (event.key === key) { readSaved(); render(); if (selected) updateDialogSave(); } });
-    readSaved(); render();
+    const requestedWork=new URLSearchParams(location.search).get('work');
+    if(kind==='quotes'&&requestedWork&&items.some(item=>normalize(item.work||'')===normalize(requestedWork))){selectedWork=requestedWork;$('library-search').value=requestedWork;}
     const deepLink = items.find(item => item.id === new URLSearchParams(location.search).get('entry'));
-    if (deepLink) openReader(deepLink, $('library-search'));
+    if(deepLink){selectedWork='';$('library-search').value='';currentPage=Math.floor(items.indexOf(deepLink)/pageSize)+1;}
+    readSaved(); render();
+    if(deepLink){
+        const card=[...document.querySelectorAll('.reading-card')].find(card=>card.dataset.entryId===deepLink.id);
+        openReader(deepLink,card?.querySelector('.reading-actions .btn')||$('library-search'));
+    }
 })();

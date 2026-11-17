@@ -6,31 +6,24 @@
     const BOOKMARK_KEY = 'shanhe-jisi-v1';
     const READING_KEY = 'shanhe-reading-v1';
     const THEME_KEY = 'shanheTheme';
-    const places = {'1893':'韶山','1921':'上海','1927':'井冈山','1935':'遵义','1949':'北京','1976':'北京'};
-    const categories = [
-        {id:'all', name:'全部足迹', icon:'fa-layer-group', ids:data.events.map(e => e.id)},
-        {id:'youth', name:'青年求索', icon:'fa-seedling', ids:['1893','1921']},
-        {id:'revolution', name:'革命征途', icon:'fa-flag', ids:['1927','1935']},
-        {id:'founding', name:'开国新篇', icon:'fa-landmark', ids:['1949']},
-        {id:'remembrance', name:'山河长忆', icon:'fa-feather-pointed', ids:['1976']},
-        {id:'poetry', name:'诗词山河', icon:'fa-book-open', ids:data.poems.map(p => p.id)}
-    ];
-    let category = 'all', selected = null, toastTimer, storyTrigger = null;
+    const places = Object.fromEntries(data.events.map(e=>[e.id,e.city||e.place]));
+    let selected = null, toastTimer;
     let state = {}, bookmarks = [], read = [];
     let storageOkay = true;
+    function storedJSON(key,fallback){const value=localStorage.getItem(key);try{return value?JSON.parse(value):fallback;}catch{return fallback;}}
     function loadState() {
         try {
-            const saved = JSON.parse(localStorage.getItem(BOOKMARK_KEY) || '{}');
+            const saved = storedJSON(BOOKMARK_KEY,{});
             state = saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
             bookmarks = Array.isArray(state.bookmarks) ? [...new Set(state.bookmarks.filter(id => data.events.some(e => e.id === id)))] : [];
-            const records = JSON.parse(localStorage.getItem(READING_KEY) || '[]');
+            const records = storedJSON(READING_KEY,[]);
             read = Array.isArray(records) ? [...new Set(records.filter(id => data.events.some(e => e.id === id)))] : [];
         } catch { storageOkay = false; }
     }
     function saveState() {
         try {
             // Preserve the long-scroll page's memorial message and signature.
-            const latest = JSON.parse(localStorage.getItem(BOOKMARK_KEY) || '{}');
+            const latest = storedJSON(BOOKMARK_KEY,{});
             if (latest && typeof latest === 'object' && !Array.isArray(latest)) state = latest;
             state.bookmarks = bookmarks;
             localStorage.setItem(BOOKMARK_KEY, JSON.stringify(state));
@@ -113,35 +106,15 @@
     }
 
     function showStory(id) {
-        const event = data.events.find(e => e.id === id);
-        if (!event) return;
-        storyTrigger = document.activeElement;
-        selected = id;
-        $('story-meta').textContent = event.year + ' · ' + event.place;
-        $('story-title').textContent = event.title;
-        $('story-text').textContent = event.text;
-        $('story-note').textContent = event.note;
-        $('story-sources').replaceChildren();
-        event.sources.forEach(sourceId => {
-            const li = element('li');
-            li.append(sourceLink(data.sources.find(s => s.id === sourceId)));
-            $('story-sources').append(li);
-        });
-        $('story-long-scroll').href = 'long-scroll.html?event=' + encodeURIComponent(id) + '#journey';
-        $('story-save-status').textContent = '';
-        updateStoryButtons();
-        document.querySelectorAll('.journey-marker').forEach(marker => marker.classList.toggle('selected', marker.id === 'marker-'+id));
-        $('story-dialog').showModal();
+        const event=data.events.find(e=>e.id===id);if(event)location.assign(event.localUrl);
     }
-    $('story-dialog').addEventListener('close', () => {
-        const target = storyTrigger?.isConnected ? storyTrigger : $('marker-'+selected);
-        target?.focus({preventScroll:true});
-    });
-    function updateStoryButtons() {
-        $('story-bookmark').setAttribute('aria-pressed', String(bookmarks.includes(selected)));
-        $('story-bookmark').textContent = bookmarks.includes(selected) ? '已收藏 · 点击取消' : '加入收藏';
-        $('mark-read').textContent = read.includes(selected) ? '✓ 已标记阅读' : '标记已读';
-        $('mark-read').disabled = read.includes(selected);
+    function updatePhotoPreview(event){
+        const photo=event.photos?.[0];if(!photo)return;
+        $('map-preview-photo').src=photo.src;$('map-preview-photo').alt=photo.title+'；'+photo.context;
+        $('map-preview-meta').textContent=event.year+' · '+event.label;
+        $('map-preview-title').textContent=event.title;$('map-preview-text').replaceChildren(SHANHE_REFERENCES.fragment(event.lead||event.summary));
+        $('map-preview-caption').textContent=photo.year+' · '+photo.context;
+        $('map-preview-read').href=event.localUrl||'footprint-'+event.id+'.html';
     }
     function toggleBookmark(id) {
         const existed = bookmarks.includes(id);
@@ -150,25 +123,30 @@
         refreshRecords();
         toast(saved ? (existed ? '已移除收藏' : '已加入阅读收藏') : '存储不可用，收藏仅在本次页面中有效。');
     }
-    $('story-bookmark').addEventListener('click', () => toggleBookmark(selected));
-    $('mark-read').addEventListener('click', () => {
-        if (!selected || read.includes(selected)) return;
-        read.push(selected);
-        const saved = saveState();
-        refreshRecords();
-        $('story-save-status').textContent = saved ? '已保存本次阅读进度。' : '浏览器存储不可用，阅读记录仅在本次页面中有效。';
-    });
-
     const cityList = [...new Set(Object.values(places))];
+    (data.biographyPeriods||[]).forEach(period=>{
+        const option=element('option',period.range+' · '+period.label);option.value=period.id;$('map-period').append(option);
+    });
+    function renderPeriod(){
+        const period=(data.biographyPeriods||[]).find(p=>p.id===$('map-period').value);
+        $('map-period-summary').hidden=!period;
+        if(!period)return;
+        $('map-period-range').textContent=period.range+' · '+period.label;
+        $('map-period-title').textContent=period.title;
+        $('map-period-copy').replaceChildren(...period.paragraphs.map(text=>{const p=element('p');p.append(SHANHE_REFERENCES.fragment(text));return p;}));
+        $('map-period-links').replaceChildren(...period.eventIds.map(id=>{
+            const event=data.events.find(e=>e.id===id);const a=element('a',event.year+' · '+places[id]+' · 图文详读 →');a.href=event.localUrl;return a;
+        }));
+    }
     cityList.forEach(city => {
         const option = element('option', city); option.value = city; $('map-city').append(option);
         const li = element('li');
-        li.append(button(city, '', () => { $('map-city').value = city; $('map-search').value = ''; renderMap(); $('home-map').scrollIntoView(); }));
+        li.append(button(city, '', () => { $('map-city').value = city; $('map-search').value = ''; $('map-period').value=''; selected=null;renderMap(); $('home-map').scrollIntoView(); }));
         $('footer-places').append(li);
     });
     function filteredEvents() {
-        const q = $('map-search').value.trim().toLowerCase(), city = $('map-city').value;
-        return data.events.filter(e => (!city || places[e.id] === city) && (!q || [e.title,e.text,e.year,e.place,...e.terms].join(' ').toLowerCase().includes(q)));
+        const q = $('map-search').value.trim().toLowerCase(), city = $('map-city').value,period=$('map-period').value;
+        return data.events.filter(e => (!period||e.biographyIds?.includes(period)) && (!city || places[e.id] === city) && (!q || [e.title,e.text,e.year,e.place,...e.terms].join(' ').toLowerCase().includes(q)));
     }
     const svgNS = 'http://www.w3.org/2000/svg';
     function svgElement(tag, attributes, text) {
@@ -177,10 +155,8 @@
         if (text !== undefined) el.textContent = text;
         return el;
     }
-    const coordinates = [[138,132],[400,132],[662,132],[662,382],[400,382],[138,382]];
     data.events.forEach((event,index) => {
-        const [x,y] = coordinates[index];
-        const group = svgElement('g', {class:'journey-marker',id:'marker-'+event.id,transform:'translate('+x+' '+y+')',role:'button',tabindex:0,'aria-label':event.year+'年 '+places[event.id]+'：'+event.title});
+        const group = svgElement('g', {class:'journey-marker',id:'marker-'+event.id,role:'link',tabindex:0,'aria-label':event.year+'年 '+places[event.id]+'：'+event.title});
         group.append(
             svgElement('circle',{class:'marker-disc',r:21}),
             svgElement('text',{class:'marker-number',y:1},String(index+1).padStart(2,'0')),
@@ -198,18 +174,29 @@
     const compactMap = matchMedia('(max-width: 600px)');
     function layoutMap() {
         const compact = compactMap.matches;
-        const points = compact ? [[120,88],[360,88],[360,290],[120,290],[120,492],[360,492]] : coordinates;
-        $('journey-map').setAttribute('viewBox', compact ? '0 0 480 660' : '0 0 800 560');
+        const columns=compact?2:3,width=compact?480:800,step=190;
+        const height=88+(Math.ceil(data.events.length/columns)-1)*step+146;
+        const points=data.events.map((_,index)=>{
+            const row=Math.floor(index/columns),column=index%columns;
+            const x=compact?120+(row%2?columns-1-column:column)*240:138+(row%2?columns-1-column:column)*262;
+            return [x,88+row*step];
+        });
+        $('journey-map').setAttribute('viewBox','0 0 '+width+' '+height);
         data.events.forEach((event,index) => $('marker-'+event.id).setAttribute('transform','translate('+points[index].join(' ')+')'));
-        const route = compact ? 'M120 88 C190 40 290 40 360 88 C465 155 465 230 360 290 S190 340 120 290 C15 355 15 425 120 492 S290 545 360 492' : 'M138 132 C220 80 320 80 400 132 S590 80 662 132 C754 218 754 296 662 382 S480 435 400 382 S220 435 138 382';
+        const route=points.reduce((line,[x,y],index)=>{
+            if(!index)return 'M'+x+' '+y;
+            const [px,py]=points[index-1],bend=x>width/2?100:-100;
+            return line+(py===y?' C'+(px+(x-px)/3)+' '+(y-42)+' '+(x-(x-px)/3)+' '+(y-42)+' '+x+' '+y:' C'+(x+bend)+' '+(py+65)+' '+(x+bend)+' '+(y-65)+' '+x+' '+y);
+        },'');
         document.querySelectorAll('.journey-route,.journey-route-halo').forEach(p=>p.setAttribute('d',route));
-        const picture=$('journey-map').querySelector('image');picture.setAttribute('width',compact?'480':'800');picture.setAttribute('height',compact?'660':'560');
-        const signature=$('journey-map').querySelector('.map-signature');signature.setAttribute('x',compact?'450':'760');signature.setAttribute('y',compact?'643':'514');
+        const picture=$('journey-map').querySelector('image');picture.setAttribute('width',String(width));picture.setAttribute('height',String(height));
+        const signature=$('journey-map').querySelector('.map-signature');signature.setAttribute('x',String(width-30));signature.setAttribute('y',String(height-24));
         const caption=$('journey-map').querySelector('.map-caption');caption.setAttribute('x',compact?'25':'35');caption.setAttribute('y',compact?'30':'46');
     }
     compactMap.addEventListener('change',layoutMap);
     layoutMap();
     function renderMap() {
+        renderPeriod();
         const visible = filteredEvents();
         $('map-results-title').textContent = ($('map-city').value || '全部地点') + ' · 足迹清单';
         $('map-status').textContent = '找到 ' + visible.length + ' / ' + data.events.length + ' 个历史节点';
@@ -228,19 +215,25 @@
             $('map-results').append(empty);
         }
         visible.forEach(event => {
-            const row = button(undefined, 'map-result'+(selected === event.id?' active':''), () => showStory(event.id));
+            const row = element('a', undefined, 'map-result');row.href=event.localUrl;
             row.dataset.event = event.id;
-            const year = element('span', event.year, 'result-year'); year.append(element('small',read.includes(event.id)?'已读':'历史节点'));
+            const year = element('span', undefined, 'result-year result-portrait');
+            const photo=event.photos?.[0];
+            if(photo){const image=element('img');image.src=photo.src;image.alt=photo.title+'（'+photo.year+'）';image.loading='lazy';image.width=76;image.height=100;year.append(image);}
+            year.append(element('span',event.year,'result-photo-year'),element('small',read.includes(event.id)?'已读':'图文'));
             const copy = element('div');
             copy.append(element('strong',event.title),element('span',places[event.id]+' · '+event.label,'map-result-meta'),element('p',event.summary || event.text));
             row.append(year,copy,icon('fa-angle-right'));
             $('map-results').append(row);
         });
+        $('map-photo-preview').hidden=!visible.length;
+        if(visible.length)updatePhotoPreview(visible.find(e=>e.id===selected)||visible[0]);
     }
-    function resetMap() { $('map-search').value = ''; $('map-city').value = ''; selected = null; renderMap(); }
+    function resetMap() { $('map-search').value = ''; $('map-city').value = ''; $('map-period').value=''; selected = null; renderMap(); }
     $('home-map-search-form').addEventListener('submit',event => { event.preventDefault(); renderMap(); });
     $('map-search').addEventListener('input',renderMap);
     $('map-city').addEventListener('change',renderMap);
+    $('map-period').addEventListener('change',()=>{selected=null;renderMap();});
     $('map-reset').addEventListener('click',resetMap);
 
     [
@@ -255,59 +248,11 @@
         $('home-stats').append(item);
     });
 
-    categories.forEach(cat => {
-        const li = element('li');
-        const b = button(undefined,'category-button',()=>selectCategory(cat.id));
-        b.dataset.category = cat.id;
-        b.append(icon(cat.icon),element('span',cat.name),element('span',String(cat.ids.length),'category-count'));
-        li.append(b); $('sidebar-categories').append(li);
-    });
-    function selectCategory(id) {
-        category = id;
-        document.querySelectorAll('[data-category]').forEach(b => {
-            b.classList.toggle('active',b.dataset.category === id);
-            b.setAttribute('aria-pressed',String(b.dataset.category === id));
-        });
-        selectTab('featured'); renderCards();
-    }
-    function renderCards() {
-        $('story-cards').replaceChildren();
-        const cat = categories.find(c => c.id === category);
-        const poetry = category === 'poetry';
-        const items = poetry ? data.poems.slice(0,6) : data.events.filter(e => cat.ids.includes(e.id));
-        $('featured-note').textContent = cat.name+' · '+items.length+' 篇选读。'+(poetry?'阅读节选、创作背景与资料出处。':'点击阅读摘要，也可收藏并标记阅读进度。');
-        items.forEach((item,index) => {
-            const card = element('article',undefined,'spot-card');
-            const href = 'long-scroll.html?poem='+encodeURIComponent(item.id)+'#poetry';
-            const cover = poetry ? element('a',undefined,'spot-card-cover cover-book') : button(undefined,'spot-card-cover'+(index%2?' cover-book':''),()=>showStory(item.id));
-            if(poetry)cover.href = href;
-            cover.setAttribute('aria-label','阅读'+item.title);
-            const img = element('img'); img.src = poetry || index%2 ? 'assets/reading.svg' : 'assets/landscape.svg'; img.alt='原创意境插画，非历史影像'; img.loading='lazy'; img.width=640; img.height=400;
-            cover.append(img,element('span',poetry?'诗词选读':'历史选读','level-badge'),element('span',item.year,'cover-year'),element('span',poetry?'诗词里的山河':places[item.id]+' · '+item.label,'cover-subtitle'));
-            const body=element('div',undefined,'spot-card-body'),head=element('div',undefined,'spot-card-header'),h3=element('h3');
-            const title=poetry?element('a',item.title):button(item.title,'card-title',()=>showStory(item.id));if(poetry)title.href=href;
-            h3.append(title);head.append(h3);
-            if(!poetry && read.includes(item.id))head.append(element('span','✓ 已读','read-chip'));
-            const tags=element('div',undefined,'spot-tags');tags.append(element('span',poetry?'创作背景':item.kicker,'tag'),element('span','附史料来源','tag'));
-            const actions=element('div',undefined,'spot-card-footer');
-            if(poetry){const a=element('a','品读诗词 →','btn btn-outline');a.href=href;actions.append(a);}else{
-                const favorite=button(undefined,'icon-btn'+(bookmarks.includes(item.id)?' active':''),()=>toggleBookmark(item.id));favorite.dataset.bookmark=item.id;favorite.setAttribute('aria-label',(bookmarks.includes(item.id)?'取消收藏':'收藏')+item.title);favorite.setAttribute('aria-pressed',String(bookmarks.includes(item.id)));favorite.append(icon('fa-bookmark'));
-                actions.append(button('阅读故事 →','btn btn-outline',()=>showStory(item.id)),favorite);
-            }
-            body.append(head,element('p',item.summary || item.text,'spot-summary'),tags,actions);card.append(cover,body);$('story-cards').append(card);
-        });
-    }
-    function selectTab(id) {
-        document.querySelectorAll('[data-tab]').forEach(b => {const active=b.dataset.tab===id;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});
-        ['featured','route'].forEach(panel=>{$(panel).hidden=panel!==id;$(panel).classList.toggle('active',panel===id);});
-    }
-    document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
-    document.querySelector('.tab-nav').addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const id=event.key==='Home'?'featured':event.key==='End'?'route':$('tab-featured').getAttribute('aria-selected')==='true'?'route':'featured';selectTab(id);$('tab-'+id).focus();});
     [
-        {title:'从家乡出发，读青年求索',text:'从韶山的起点读到1921年，观察个人成长与时代变化如何相遇。',ids:['1893','1921']},
-        {title:'沿着征途，读探索与选择',text:'把井冈山与遵义两个节点联系起来，结合资料原文理解道路探索。',ids:['1927','1935']},
-        {title:'翻开新篇，回望历史',text:'阅读新中国成立与1976年的历史节点，结合完整生平了解历史贡献与曲折。',ids:['1949','1976']}
-    ].forEach((route,index)=>{const item=element('article',undefined,'path-step');const content=element('div',undefined,'step-content');content.append(element('h3',route.title),element('p',route.text));const links=element('div',undefined,'step-spots');route.ids.forEach(id=>{const e=data.events.find(e=>e.id===id);links.append(button(e.year+' · '+e.label,'step-spot-link',()=>showStory(id)));});content.append(links);item.append(element('span',String(index+1),'step-number'),content);$('route-steps').append(item);});
+        {title:'从家乡出发，读青年求索',text:'从韶山、长沙读到上海，沿着求学、结社与建党的线索，走近青年时期的学习和实践。',ids:['1893','1918','1921']},
+        {title:'沿着征途，读探索与选择',text:'串联井冈山、遵义、延安和重庆，阅读根据地、长征、抗战与战后谈判的不同经历。',ids:['1927','1935','1937','1945']},
+        {title:'翻开新篇，回望历史',text:'从开国大典、宪法起草到重返韶山，结合外交影像与诗词，继续阅读后半生的活动。',ids:['1949','1954','1959','1972','1976']}
+    ].forEach((route,index)=>{const item=element('article',undefined,'path-step');const content=element('div',undefined,'step-content');content.append(element('h3',route.title),element('p',route.text));const links=element('div',undefined,'step-spots');route.ids.forEach(id=>{const e=data.events.find(e=>e.id===id);const a=element('a',e.year+' · '+e.label,'step-spot-link');a.href=e.localUrl;links.append(a);});content.append(links);item.append(element('span',String(index+1),'step-number'),content);$('route-steps').append(item);});
 
     function renderNotebook() {
         const list=$('notebook-items');list.replaceChildren();
@@ -326,11 +271,11 @@
         $('favorite-count').textContent=String(bookmarks.length);$('read-count').textContent=String(read.length);$('total-count').textContent=String(data.events.length);
         $('reading-progress').max=data.events.length;$('reading-progress').value=read.length;
         $('progress-text').textContent=read.length?'已读 '+read.length+' / '+data.events.length+' 篇（'+Math.round(read.length/data.events.length*100)+'%），继续留下你的阅读足迹。':'还没有阅读记录，从一个历史节点开始吧。';
-        if(selected)updateStoryButtons();renderCards();renderMap();renderNotebook();
+        renderMap();renderNotebook();
     }
     $('show-notebook').addEventListener('click',()=>{renderNotebook();$('notebook-dialog').showModal();});
     window.addEventListener('storage',event=>{if(event.key===BOOKMARK_KEY||event.key===READING_KEY){loadState();refreshRecords();}});
     window.addEventListener('pageshow',()=>{loadState();refreshRecords();});
-    loadState();selectCategory('all');refreshRecords();
+    loadState();refreshRecords();
     if(!storageOkay)toast('浏览器存储不可用，当前仍可浏览，阅读记录仅在本次页面中有效。');
 })();

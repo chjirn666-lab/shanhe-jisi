@@ -85,3 +85,6 @@ html[data-theme="dark"] .spot-card-cover{background:#f3efe5}
     }
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+.history-photo .photo-credit{display:block;font-size:10px;color:var(--gray-color);line-height:1.8;margin-top:10px;overflow-wrap:anywhere}.photo-gallery-note{font-size:11px;line-height:1.8;color:var(--gray-color);margin:20px 0 0}
+
+.theme-reading{margin-top:24px}.theme-reading>h2{font-size:21px;margin:0 0 20px;color:var(--dark-color)}.theme-reading>h2 i{color:var(--primary-color);margin-right:7px}.theme-reading .tab-panel-footer{margin-top:22px}@media(min-width:577px) and (max-width:992px){.sidebar{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar-section:first-child{grid-column:auto}}
