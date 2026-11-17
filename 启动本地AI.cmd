@@ -8,9 +8,11 @@ if errorlevel 1 (
 )
 if not exist "%~dp0.runtime\local-ai\models\qwen2.5-1.5b-instruct-q4_k_m.gguf" (
   echo.
-  echo [提示] 本机还没有本地模型，继续运行会联网下载约 1.1 GB 的模型文件。
-  echo [提示] 只是想浏览网站的话，请关闭本窗口，改双击「打开网页.cmd」，
-  echo        或者直接打开 dist\index.html，不需要下载任何文件。
+  echo [NOTICE] The local AI model is not installed on this machine.
+  echo          The first run downloads about 1.1 GB and needs Internet.
+  echo.
+  echo          If you only want to browse the website, close this window
+  echo          and open dist\index.html directly - no download needed.
   echo.
   pause
 )
