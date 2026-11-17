@@ -1,0 +1,463 @@
+[
+  {
+    "id": "mao-1913",
+    "title": "青年毛泽东：1913年肖像",
+    "year": "1913年春",
+    "category": "人物肖像",
+    "caption": "1913年春的青年肖像，可结合临近求学经历阅读，摄影者不详。",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_1913.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Mao_Zedong_1913.jpg",
+    "credit": "摄影者不详；维基共享资源收录",
+    "license": "公有领域（原收录页标注，PD-China）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_1913.jpg#Licensing",
+    "width": 996,
+    "height": 1440,
+    "src": "assets/photos/mao-1913.jpg",
+    "sortYear": 1913,
+    "featured": true,
+    "chapters": [
+      "1893",
+      "1918"
+    ],
+    "chapterOrder": {
+      "1893": 0,
+      "1918": 1
+    },
+    "context": "1913年春的青年肖像，属于求学时期；并非出生当年的照片。",
+    "bytes": 173654,
+    "sha256": "70c15ba81c33337bc5864a9fb7d20320bb453bfe6e4cc70cfe7d18f6a68bd032",
+    "chapterContexts": {
+      "1918": "1913年春的毛泽东青年肖像，供求学经历对照；并非1918年毕业时的照片。"
+    }
+  },
+  {
+    "id": "mao-1919",
+    "title": "青年毛泽东：1919年肖像",
+    "year": "1919年",
+    "category": "人物肖像",
+    "caption": "1919年的青年肖像，可与新民学会和《湘江评论》的资料一同阅读。",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_1919.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/5/58/Mao_Zedong_1919.jpg",
+    "credit": "摄影者不详；原档案来源：中国共产党新闻；维基共享资源收录",
+    "license": "公有领域（原收录页标注，Public Domain Mark）",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "width": 502,
+    "height": 527,
+    "src": "assets/photos/mao-1919.jpg",
+    "sortYear": 1919,
+    "featured": true,
+    "chapters": [
+      "1921",
+      "1918"
+    ],
+    "chapterOrder": {
+      "1918": 2,
+      "1921": 0
+    },
+    "context": "1919年青年肖像，供1921年前史阅读；并非中共一大现场照片。",
+    "bytes": 48550,
+    "sha256": "d56a0efc50a354866dd2f617d1b3e70d45db319bcffca9cb84f8d19613a29c34",
+    "chapterContexts": {
+      "1918": "1919年青年肖像，供长沙青年时期的阅读对照；并非新民学会成立现场。"
+    }
+  },
+  {
+    "id": "xinmin-society-1919",
+    "title": "新民学会会员在长沙合影",
+    "year": "1919年11月16日",
+    "category": "历史活动",
+    "caption": "新民学会部分会员在长沙周南女校合影。原图注记载毛泽东位于后排左四，摄影者不详。",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:新民学会会员在长沙摄影.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9c/%E6%96%B0%E6%B0%91%E5%AD%A6%E4%BC%9A%E4%BC%9A%E5%91%98%E5%9C%A8%E9%95%BF%E6%B2%99%E6%91%84%E5%BD%B1.jpg",
+    "credit": "摄影者不详；原档案引用新华网；维基共享资源收录",
+    "license": "公有领域（原收录页标注，PD-China）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:新民学会会员在长沙摄影.jpg",
+    "width": 764,
+    "height": 571,
+    "src": "assets/photos/xinmin-society-1919.jpg",
+    "sortYear": 1919,
+    "featured": true,
+    "chapters": [
+      "1921",
+      "1918"
+    ],
+    "chapterOrder": {
+      "1918": 0,
+      "1921": 1
+    },
+    "context": "新民学会部分会员在长沙周南女校合影。原图注记载毛泽东位于后排左四，摄影者不详。",
+    "bytes": 162329,
+    "sha256": "47f6b26e5d9519714ed793adbf0e78180bbbf4ab4740e505a7d16d62f8522a46",
+    "chapterContexts": {
+      "1918": "1919年11月16日新民学会部分会员在长沙合影，毛泽东位于后排左四。这是学会成立次年的活动记录，并非1918年成立当天的照片。"
+    }
+  },
+  {
+    "id": "mao-1924",
+    "title": "1924年在上海的毛泽东",
+    "year": "1924年",
+    "category": "人物肖像",
+    "caption": "1924年在上海的毛泽东，属于早期革命活动时期的人物记录。",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_in_1924.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Mao_Zedong_in_1924.jpg",
+    "credit": "摄影者不详；原档案引用新华网；维基共享资源收录",
+    "license": "公有领域（原收录页标注，PD-China）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_in_1924.jpg",
+    "width": 444,
+    "height": 588,
+    "src": "assets/photos/mao-1924.jpg",
+    "sortYear": 1924,
+    "featured": false,
+    "chapters": [
+      "1921"
+    ],
+    "chapterOrder": {
+      "1921": 2
+    },
+    "context": "1924年在上海的人物照，属于参加中共一大之后的活动记录。",
+    "bytes": 85510,
+    "sha256": "5c46e30120a190ea4342aa7b8051f1aebfb7c888ee16d4450163db7ed195b397"
+  },
+  {
+    "id": "mao-1925",
+    "title": "1925年的毛泽东",
+    "year": "1925年",
+    "category": "人物肖像",
+    "caption": "原收录页标为1925年，说明通常认为是在广州拍摄的人物照；摄影者不详。",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_in_1925.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Mao_Zedong_in_1925.jpg",
+    "credit": "摄影者不详；维基共享资源收录",
+    "license": "公有领域（原收录页标注，PD-China）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_in_1925.jpg",
+    "width": 376,
+    "height": 478,
+    "src": "assets/photos/mao-1925.jpg",
+    "sortYear": 1925,
+    "featured": true,
+    "chapters": [
+      "1927"
+    ],
+    "chapterOrder": {
+      "1927": 0
+    },
+    "context": "1925年人物照，早于1927年井冈山斗争，供相近年代人物对照。",
+    "bytes": 17181,
+    "sha256": "5b68956aceac0074c95bcd05e99f672a3b640fc8fd97c3a21950d134dc1d0eb2"
+  },
+  {
+    "id": "mao-1931",
+    "title": "1931年的毛泽东",
+    "year": "1931年",
+    "category": "人物肖像",
+    "caption": "1931年人物肖像，摄影者及具体拍摄地点未见明确记载。",
+    "src": "assets/photos/mao-1931.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao1931.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/3/34/Mao1931.jpg",
+    "credit": "摄影者不详",
+    "license": "公有领域（原收录页标注）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Public_domain",
+    "width": 1200,
+    "height": 1395,
+    "sortYear": 1931,
+    "featured": true,
+    "chapters": [
+      "1927"
+    ],
+    "chapterOrder": {
+      "1927": 2
+    },
+    "context": "1931年人物肖像，摄影者及具体拍摄地点未见明确记载。",
+    "bytes": 31147,
+    "sha256": "6158d695521f98d9c8cb6c5e150a2948466708a361cebe94566d8a355c0fed2b"
+  },
+  {
+    "id": "mao-1937",
+    "title": "征途岁月中的毛泽东",
+    "year": "1937年",
+    "category": "人物肖像",
+    "caption": "原收录页标为1937年，摄影者为埃德加·斯诺。",
+    "src": "assets/photos/mao-1937.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_1937.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Mao_Zedong_1937.jpg",
+    "credit": "埃德加·斯诺",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 1200,
+    "height": 1526,
+    "sortYear": 1937,
+    "featured": true,
+    "chapters": [
+      "1935",
+      "1937"
+    ],
+    "chapterOrder": {
+      "1935": 0,
+      "1937": 0
+    },
+    "context": "1937年人物照，埃德加·斯诺摄；并非1935年遵义会议现场照片。",
+    "bytes": 319528,
+    "sha256": "09a43b6d38c05f412debdc08ad52bf3d891c98b7c0d829cd2564fb2ccfe9fd48",
+    "chapterContexts": {
+      "1937": "1937年人物照，原档案署名埃德加·斯诺；作为这一时期的人物资料照，并非《论持久战》讲演现场。"
+    }
+  },
+  {
+    "id": "mao-carlson",
+    "title": "毛泽东与埃文斯·卡尔逊合影",
+    "year": "约1937年",
+    "category": "历史活动",
+    "caption": "毛泽东与到访中国西北地区的卡尔逊合影；照片最迟于1938年12月发表。",
+    "src": "assets/photos/mao-carlson.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Photograph_of_Mao_Zedong_with_Evans_Carlson_circa_1937_Trim.jpg",
+    "downloadUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Photograph_of_Mao_Zedong_with_Evans_Carlson_circa_1937_Trim.jpg/1280px-Photograph_of_Mao_Zedong_with_Evans_Carlson_circa_1937_Trim.jpg",
+    "credit": "摄影者不详；原收录页推测可能为《中国评论周报》",
+    "license": "公有领域（原收录页标注）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Public_domain",
+    "width": 1200,
+    "height": 818,
+    "sortYear": 1937,
+    "featured": false,
+    "chapters": [
+      "1935",
+      "1937"
+    ],
+    "chapterOrder": {
+      "1935": 2,
+      "1937": 1
+    },
+    "context": "毛泽东与到访中国西北地区的卡尔逊合影；照片最迟于1938年12月发表。",
+    "bytes": 121127,
+    "sha256": "99c12f94d5a11dcf794bcd7aa56364a086a5ae76bdef7525c85a60103ee343b6",
+    "chapterContexts": {
+      "1937": "毛泽东与到访中国西北地区的卡尔逊合影，约1937年，最迟于1938年12月发表。"
+    }
+  },
+  {
+    "id": "mao-chongqing-1945",
+    "title": "毛泽东在重庆机场与欢迎者合影",
+    "year": "1945年8月",
+    "category": "历史活动",
+    "caption": "毛泽东赴重庆谈判时在机场与欢迎者合影，原图注列有张澜、邵力子、郭沫若、傅学文、张治中与毛泽东。",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_in_Chongqing.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Mao_Zedong_in_Chongqing.jpg",
+    "credit": "摄影者不详；原档案来源：人民网政协频道；维基共享资源收录",
+    "license": "公有领域（原收录页标注，PD-China）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_in_Chongqing.jpg",
+    "width": 400,
+    "height": 229,
+    "src": "assets/photos/mao-chongqing-1945.jpg",
+    "sortYear": 1945,
+    "featured": true,
+    "chapters": [
+      "1949",
+      "1945"
+    ],
+    "chapterOrder": {
+      "1945": 0,
+      "1949": 2
+    },
+    "context": "1945年8月重庆机场合影，作为新中国成立之前相关活动的延伸阅读。",
+    "bytes": 64108,
+    "sha256": "1273d174a88e7e98f1b894e6c7150659ff90a3718d0102ffa0f57835d475860a",
+    "chapterContexts": {
+      "1945": "1945年8月的重庆机场合影，记录毛泽东赴重庆谈判期间的活动；并非《双十协定》签字现场。"
+    }
+  },
+  {
+    "id": "mao-founding-1949",
+    "title": "1949年开国大典",
+    "year": "1949年10月1日",
+    "category": "历史活动",
+    "caption": "1949年10月1日，毛泽东在开国大典上宣告中华人民共和国中央人民政府成立。",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Proclaiming_New_China.JPG",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/8/85/Mao_Proclaiming_New_China.JPG",
+    "credit": "原摄影者未明确；维基共享资源由 Orihara1 上传",
+    "license": "公有领域（原收录页标注，PD-China）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Mao_Proclaiming_New_China.JPG#Licensing",
+    "width": 771,
+    "height": 566,
+    "src": "assets/photos/mao-founding-1949.jpg",
+    "sortYear": 1949,
+    "featured": true,
+    "chapters": [
+      "1949"
+    ],
+    "chapterOrder": {
+      "1949": 0
+    },
+    "context": "毛泽东在开国大典上宣告中华人民共和国中央人民政府成立。原收录页明确记载日期为1949年10月1日。",
+    "bytes": 102229,
+    "sha256": "d5e8bdf95f5a79d7d4c1302e154b4a6065162f06652df0a55f7b5ed54ee6fa0e"
+  },
+  {
+    "id": "mao-1950",
+    "title": "新中国成立初期的肖像",
+    "year": "1950年",
+    "category": "人物肖像",
+    "caption": "陈正青摄，新中国成立初期的人物肖像，非开国大典现场照片。",
+    "src": "assets/photos/mao-1950.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Tse_Tung.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Mao_Tse_Tung.jpg",
+    "credit": "陈正青",
+    "license": "公有领域（原收录页标注）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Public_domain",
+    "width": 1200,
+    "height": 1661,
+    "sortYear": 1950,
+    "featured": true,
+    "chapters": [
+      "1949",
+      "1954"
+    ],
+    "chapterOrder": {
+      "1949": 1,
+      "1954": 0
+    },
+    "context": "陈正青摄，新中国成立初期的人物肖像，非开国大典现场照片。",
+    "bytes": 200738,
+    "sha256": "5978d8ab238923b93494ccf5250d6fed99496029ce3948a5372e8da26c6735bb",
+    "chapterContexts": {
+      "1954": "陈正青摄于1950年的毛泽东肖像，用于新中国成立初期的人物阅读；并非1954年宪法起草或全国人大会议现场。"
+    }
+  },
+  {
+    "id": "mao-nixon-1972",
+    "title": "毛泽东会见尼克松",
+    "year": "1972年2月21日",
+    "category": "历史活动",
+    "caption": "毛泽东在北京会见美国总统尼克松。影像来自尼克松时期白宫照片集。",
+    "src": "assets/photos/mao-nixon-1972.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:President_Richard_Nixon_and_Mao_Zedong.jpg",
+    "downloadUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/President_Richard_Nixon_and_Mao_Zedong.jpg/1280px-President_Richard_Nixon_and_Mao_Zedong.jpg",
+    "credit": "美国白宫摄影办公室（尼克松时期照片集）；美国国家档案馆藏",
+    "license": "公有领域（原收录页标注）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Public_domain",
+    "width": 1200,
+    "height": 857,
+    "sortYear": 1972,
+    "featured": true,
+    "chapters": [
+      "1976",
+      "1972"
+    ],
+    "chapterOrder": {
+      "1972": 0,
+      "1976": 0
+    },
+    "context": "1972年2月21日会见尼克松的记录，属于晚年活动影像；非1976年照片。",
+    "bytes": 1308770,
+    "sha256": "41d5ea1d8d9b27653035e94261c1f601e08d08383295183a80aae64a05cfc783",
+    "chapterContexts": {
+      "1972": "1972年2月21日，毛泽东在北京会见美国总统尼克松的历史影像。"
+    }
+  },
+  {
+    "id": "shaoshan-residence",
+    "title": "韶山毛泽东故居",
+    "year": "2012年10月17日",
+    "category": "足迹场景",
+    "caption": "现代拍摄的韶山故居实景，供地点阅读；并非1893年历史照片。",
+    "src": "assets/photos/shaoshan-residence.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_former_residence_of_Mao_Zedong_5.jpg",
+    "downloadUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/The_former_residence_of_Mao_Zedong_5.jpg/1280px-The_former_residence_of_Mao_Zedong_5.jpg",
+    "credit": "huangdan2060",
+    "license": "公有领域（原收录页标注）",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Public_domain",
+    "width": 1200,
+    "height": 900,
+    "sortYear": 2012,
+    "featured": true,
+    "chapters": [
+      "1893",
+      "1959"
+    ],
+    "chapterOrder": {
+      "1893": 1,
+      "1959": 0
+    },
+    "context": "现代拍摄的韶山故居实景，供地点阅读；并非1893年历史照片。",
+    "bytes": 441160,
+    "sha256": "3c5695c90b211ffb59ee20de81e764dbba7b7cde42beb6fb030604be2a6353b7",
+    "chapterContexts": {
+      "1959": "2012年10月17日拍摄的韶山毛泽东故居，帮助了解故乡地点；并非1959年返乡活动现场照片。"
+    }
+  },
+  {
+    "id": "zunyi-site",
+    "title": "遵义会议会址外观",
+    "year": "2018年2月20日",
+    "category": "足迹场景",
+    "caption": "现代拍摄的遵义会议会址外观，帮助了解阅读地点，非1935年会议现场照片。",
+    "src": "assets/photos/zunyi-site.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Site_of_Zunyi_Conference_(20180220101816).jpg",
+    "downloadUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Site_of_Zunyi_Conference_%2820180220101816%29.jpg/1280px-Site_of_Zunyi_Conference_%2820180220101816%29.jpg",
+    "credit": "N509FZ",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1200,
+    "height": 809,
+    "sortYear": 2018,
+    "featured": true,
+    "chapters": [
+      "1935"
+    ],
+    "chapterOrder": {
+      "1935": 1
+    },
+    "context": "现代拍摄的遵义会议会址外观，帮助了解阅读地点，非1935年会议现场照片。",
+    "bytes": 311499,
+    "sha256": "8f994d2d3196f9d363d59cd98cd5bfb19cef8a08aeb7df704aa2ed03b81ea53c"
+  },
+  {
+    "id": "jinggangshan-landscape",
+    "title": "黄洋界以西的井冈山山景",
+    "year": "2025年1月24日",
+    "category": "足迹场景",
+    "caption": "从黄洋界附近记录的井冈山现代山景，非1927年历史影像。",
+    "src": "assets/photos/jinggangshan-landscape.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jinggang_Mountains_west_of_Huangyangjie_(20250124101746).jpg",
+    "downloadUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Jinggang_Mountains_west_of_Huangyangjie_%2820250124101746%29.jpg/1280px-Jinggang_Mountains_west_of_Huangyangjie_%2820250124101746%29.jpg",
+    "credit": "N509FZ",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1200,
+    "height": 800,
+    "sortYear": 2025,
+    "featured": false,
+    "chapters": [
+      "1927"
+    ],
+    "chapterOrder": {
+      "1927": 1
+    },
+    "context": "从黄洋界附近记录的井冈山现代山景，非1927年历史影像。",
+    "bytes": 242987,
+    "sha256": "71107899dca05edfdc7aa464bb8b958d2791624ec46aab36c9d6162d08f0ca30"
+  },
+  {
+    "id": "mao-anefo",
+    "title": "另一幅档案中的肖像",
+    "year": "年份待核实",
+    "category": "人物肖像",
+    "caption": "荷兰国家档案馆ANEFO馆藏，原页的日期标注存在差异，具体年份待核实。",
+    "src": "assets/photos/mao-anefo.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mao_Zedong_Anefo.jpg",
+    "downloadUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Mao_Zedong_Anefo.jpg/1280px-Mao_Zedong_Anefo.jpg",
+    "credit": "摄影者不详；荷兰国家档案馆 ANEFO 馆藏",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 1200,
+    "height": 1172,
+    "sortYear": 9999,
+    "featured": false,
+    "chapters": [
+      "1976"
+    ],
+    "chapterOrder": {
+      "1976": 1
+    },
+    "context": "荷兰国家档案馆ANEFO馆藏，原页的日期标注存在差异，具体年份待核实。",
+    "bytes": 631406,
+    "sha256": "b4063ae6d66c54865d74d053c86765e4ce818cb438991a4ab8cb3c92f904d6b4"
+  }
+]
