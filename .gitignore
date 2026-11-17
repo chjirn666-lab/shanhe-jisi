@@ -3,8 +3,21 @@
 !.env.example
 node_modules/
 .runtime/
+.openai/
 preview/
-*.log
-*.tar.gz
 release/
 .workbuddy/
+传智杯提交材料/
+*.log
+*.tar.gz
+*.zip
+*.mp4
+Thumbs.db
+.DS_Store
+
+# 内部评估与审查文档，不进入公开仓库
+参赛可行性评估.md
+内容争议审查报告.md
+省一冲刺清单.md
+后端检查报告.md
+项目检查报告.md
