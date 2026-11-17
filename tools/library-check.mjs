@@ -16,6 +16,9 @@ try {
     assert.equal(await page.$$eval('.reading-card',n=>n.length),6);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
     await page.screenshot({path:path.join(root,'preview/poetry-desktop.png'),fullPage:true});
+    await page.focus('[data-page="2"]');await page.keyboard.press('Enter');
+    assert.equal(await page.$eval('[aria-current="page"][data-page]',e=>e.dataset.page),'2');
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'result-status');
     const seen = new Set();
     for(let n=1;n<=5;n++){
         await page.click('[data-page="'+n+'"]');
@@ -23,11 +26,11 @@ try {
         const ids=await page.$$eval('.reading-card',cards=>cards.map(c=>c.dataset.entryId));
         ids.forEach(id=>{assert.ok(!seen.has(id),'诗词分页出现重复条目：'+id);seen.add(id);});
     }
-    assert.equal(seen.size,30);
+    assert.equal(seen.size,29);
     await page.select('#library-sort','newest');
     assert.equal(await page.$eval('[aria-current="page"][data-page]',e=>e.dataset.page),'1');
     await page.click('#library-reset');
-    checks.push('30首分页无重复遗漏，年代排序与重置');
+    checks.push('29首分页无重复遗漏，年代排序与重置');
     await page.click('[data-topic="征途岁月"]');
     assert.ok(await page.$$eval('.reading-card',n=>n.length>0&&n.length<=6));
     await page.type('#library-search','1935');
@@ -48,7 +51,22 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.$eval('.reading-actions .btn',e=>e===document.activeElement),true);
     checks.push('诗词收藏持久保存、只看收藏、键盘打开与关闭详情');
+    await page.click('.reading-actions .btn');
+    assert.equal(await page.$eval('#reader-fulltext-section',e=>e.hidden),false);
+    const fullText=await page.$eval('#reader-fulltext',e=>e.textContent);
+    assert.match(fullText,/独立寒秋/);
+    assert.match(fullText,/浪遏飞舟/);
+    assert.ok(fullText.length>80,'全篇内容过短');
+    assert.ok((await page.$$eval('#reader-fulltext-links a',links=>links.map(a=>a.href))).every(h=>h.startsWith('https://')));
+    assert.equal(await page.$eval('#reader-copy-full',e=>e.hidden),false);
+    await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw new Error('Denied for fallback check');}}}));
+    await page.click('#reader-copy-full');
+    assert.match(await page.$eval('#copy-text',e=>e.value),/浪遏飞舟/);
+    assert.match(await page.$eval('#copy-text',e=>e.value),/全文核对来源/);
+    await page.keyboard.press('Escape');
+    checks.push('诗词详情页完整全篇、核对来源与复制全篇回退');
     await page.goto(base+'quotes.html?entry=investigate',{waitUntil:'networkidle0'});
+    assert.equal(await page.$('#reader-fulltext-section'),null,'语录馆不应出现全篇区块');
     assert.equal(await page.$$eval('.reading-card',n=>n.length),6);
     assert.equal(await page.$eval('#saved-count',e=>e.textContent),'0');
     assert.match(await page.$eval('#reader-title',e=>e.textContent),/反对本本主义/);
@@ -64,6 +82,10 @@ try {
     await page.reload({waitUntil:'networkidle0'});await page.keyboard.press('Escape');
     assert.equal(await page.$eval('#saved-count',e=>e.textContent),'1');
     checks.push('语录深链接、准确出处、复制失败时手动复制、两馆收藏互不覆盖');
+    await page.focus('[data-page="2"]');await page.keyboard.press('Enter');
+    assert.equal(await page.$eval('[aria-current="page"][data-page]',e=>e.dataset.page),'2');
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'result-status');
+    checks.push('诗词和语录键盘翻页后，焦点回到结果状态');
     const quoteIds = new Set();
     for(let n=1;n<=5;n++) {
         await page.click('[data-page="'+n+'"]');
@@ -92,6 +114,11 @@ try {
             assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,file+' at '+width);
         }
     }
+    await page.goto(base+'long-scroll.html?poem=march#poetry',{waitUntil:'networkidle0'});
+    assert.equal(await page.$eval('#poem-fulltext',e=>new URL(e.href).searchParams.get('entry')),'march');
+    await page.click('#poem-tab-snow');
+    assert.equal(await page.$eval('#poem-fulltext',e=>new URL(e.href).searchParams.get('entry')),'snow');
+    checks.push('长卷诗词区全篇入口随篇目切换');
     await page.goto(base+'quotes.html',{waitUntil:'networkidle0'});
     await page.click('#mobile-menu-btn');
     assert.equal(await page.$eval('#mobile-menu-btn',e=>e.getAttribute('aria-expanded')),'true');
