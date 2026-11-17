@@ -39,6 +39,20 @@ test('方法、媒体类型、JSON与长度边界',async t=>{
   for(const data of ['{','null','[]','{}','{"question":1}','{"question":" "}',JSON.stringify({question:'中'.repeat(301)})])assert.equal((await raw(port,{data})).status,400);
   assert.equal((await raw(port,{data:JSON.stringify({question:'中'.repeat(300)})})).status,200);
   assert.equal((await raw(port,{data:JSON.stringify({question:'x'.repeat(5000)})})).status,413);
+  assert.equal((await raw(port,{data:JSON.stringify({question:'韶山',answerMode:'invalid'})})).status,400);
+});
+test('回答方式传递到服务端，检索选项可绕过模型',async t=>{
+  let received;const {port}=await fixture(t,{answer:async(_question,_env,_fetch,options)=>{received=options;return {mode:'retrieval',answer:'本站资料',sources:[],matches:[]};}});
+  const r=await raw(port,{data:JSON.stringify({question:'韶山',answerMode:'retrieval'})});assert.equal(r.status,200);assert.equal(received.retrievalOnly,true);
+});
+test('研读 API 返回指定题目的资料并拒绝未知题目',async t=>{
+  const {port}=await fixture(t);
+  const data=JSON.stringify({question:'研读重庆谈判',answerMode:'retrieval',studyTopic:'chongqing'});
+  const result=await raw(port,{data});
+  assert.equal(result.status,200);
+  assert.equal(result.data.study.topic,'chongqing');
+  assert.equal(result.data.study.evidence.length,3);
+  assert.equal((await raw(port,{data:data.replace('chongqing','unknown')})).status,400);
 });
 test('静态页面、无扩展名路由和根目录隔离',async t=>{
   const {base}=await fixture(t);

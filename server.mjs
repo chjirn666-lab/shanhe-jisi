@@ -4,7 +4,7 @@ import path from 'node:path';
 import {isIP} from 'node:net';
 import {randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
-import {answerQuestion,configured} from './src/assistant.mjs';
+import {answerQuestion,configured,modelStatus} from './src/assistant.mjs';
 
 const root=path.dirname(fileURLToPath(import.meta.url));
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.woff2':'font/woff2','.json':'application/json; charset=utf-8'};
@@ -63,7 +63,7 @@ export function createServer({env=process.env,answer=answerQuestion,logger=event
       if(!allowedHosts.has(String(req.headers.host||'').toLowerCase())){json(403,{error:'访问域名未配置，请设置 APP_ORIGIN。'});return;}
       if(url.pathname==='/api/status'){
         if(req.method!=='GET'){json(405,{error:'请使用 GET 请求。'},{Allow:'GET'});return;}
-        json(200,{service:'shanhe-jisi',mode:configured(env)?'ai':'retrieval'});return;
+        json(200,{service:'shanhe-jisi',...await modelStatus(env)});return;
       }
       if(url.pathname==='/api/ask'){
         if(req.method!=='POST'){json(405,{error:'请使用 POST 请求。'},{Allow:'POST'});return;}
@@ -82,11 +82,13 @@ export function createServer({env=process.env,answer=answerQuestion,logger=event
         for await(const chunk of req){size+=chunk.length;if(size>4096){json(413,{error:'请求过长。'});return;}chunks.push(chunk);}
         let payload;try{payload=JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{json(400,{error:'JSON 格式不正确。'});return;}
         if(typeof payload?.question!=='string'||!payload.question.trim()||payload.question.length>300){json(400,{error:'问题须为 1 至 300 个字符。'});return;}
+        if(payload.answerMode!==undefined&&!['auto','retrieval'].includes(payload.answerMode)){json(400,{error:'回答方式无效。'});return;}
+        if(payload.studyTopic!==undefined&&!globalThis.SHANHE_STUDY.findTopic(payload.studyTopic)){json(400,{error:'研读题目无效。'});return;}
         if(active>=maxConcurrent){json(503,{error:'正在处理其他问题，请稍后重试。'},{'Retry-After':'3'});return;}
         const controller=new AbortController();
         const disconnected=()=>{if(!res.writableFinished)controller.abort();};
         res.on('close',disconnected);active++;
-        try{json(200,await answer(payload.question.trim(),env,fetch,{signal:controller.signal,logger:log,requestId}));}
+        try{json(200,await answer(payload.question.trim(),env,fetch,{signal:controller.signal,logger:log,requestId,retrievalOnly:payload.answerMode==='retrieval',studyTopic:payload.studyTopic}));}
         finally{active--;res.off('close',disconnected);log({event:'ask_complete',requestId,status:res.statusCode,durationMs:now()-started});}
         return;
       }

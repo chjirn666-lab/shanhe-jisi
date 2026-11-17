@@ -19,11 +19,16 @@
     if(kind==='biography')return history;
     if(kind==='poetry-catalog')return poems;
     if(kind==='quotes-catalog')return quotes;
-    const ranked=entries.map(entry=>{
-      let score=entry.terms.reduce((total,term)=>total+(normalize(term)&&q.includes(normalize(term))?Math.min(term.length,6):0),0);
-      if(q.includes(normalize(entry.title)))score+=12;
-      return {...entry,score};
+    let ranked=entries.map(entry=>{
+      const matched=entry.terms.filter(term=>normalize(term)&&q.includes(normalize(term)));
+      let score=matched.reduce((total,term)=>total+Math.min(term.length,6),0);
+      const titleMatch=q.includes(normalize(entry.title));
+      if(titleMatch)score+=12;
+      const specific=titleMatch||matched.some(term=>!/^\d{4}年?$/.test(term)&&!['毛泽东','毛主席','生平','历史'].includes(term));
+      return {...entry,score,specific};
     }).filter(e=>e.score>0).sort((a,b)=>b.score-a.score);
+    // A shared year alone must not mix unrelated poems into an event question.
+    if(ranked.some(e=>e.specific))ranked=ranked.filter(e=>e.specific);
     const threshold=ranked.length?Math.max(1,ranked[0].score*.65):1;
     return ranked.filter(e=>e.score>=threshold).slice(0,3);
   }
@@ -38,8 +43,20 @@
       const noun=kind==='poetry-catalog'?'诗词':'语录';
       return {mode:'retrieval',intent:kind,answer:'本站收录'+matches.length+(noun==='诗词'?'首':'则')+noun+'，以下是目录：\n\n'+matches.map((e,i)=>(i+1)+'. '+e.title+'（'+e.season+'）').join('\n')+'\n\n可在导航中的“毛主席'+noun+'”查看节选、背景和逐条来源。',sources:citedSources(matches.slice(0,3)),matches:matches.map(e=>e.id)};
     }
-    const selected=matches.slice(0,kind==='biography'?6:2);
-    return {mode:'retrieval',intent:kind,answer:(kind==='biography'?'以下为本站精选生平节点，按时间梳理，更多经历可阅读首页生平专题：':'检索到以下相关资料摘要，供你对照问题阅读：')+'\n\n'+selected.map(e=>e.title+'\n'+(e.type==='诗词背景'?e.quote+'\n':'')+e.text).join('\n\n'),sources:citedSources(selected),matches:selected.map(e=>e.id)};
+    const event = matches[0];
+    if (kind === 'detail' && event.type === '历史节点' && event.timeline?.length &&
+        /时间线|时间节点/.test(question)) {
+      const rows = event.timeline.map(({date, text}) => date + ' · ' + text);
+      return {
+        mode: 'retrieval',
+        intent: 'timeline',
+        answer: event.title + '的时间线\n\n' + rows.join('\n'),
+        sources: citedSources([event]),
+        matches: [event.id]
+      };
+    }
+    const selected=kind==='biography'?matches:matches.slice(0,2);
+    return {mode:'retrieval',intent:kind,answer:(kind==='biography'?'以下为本站收录的'+selected.length+'个生平节点，按时间梳理；完整图文可进入“生平足迹”阅读：':'检索到以下相关资料摘要，供你对照问题阅读：')+'\n\n'+selected.map(e=>(kind==='biography'?e.year+' · ':'')+e.title+'\n'+(e.type==='诗词背景'?e.quote+'\n':'')+(kind==='biography'?e.summary||e.lead:e.text)).join('\n\n'),sources:citedSources(selected),matches:selected.map(e=>e.id)};
   }
   root.SHANHE_GUIDE=Object.freeze({retrieve,citedSources,answer});
 })(globalThis);

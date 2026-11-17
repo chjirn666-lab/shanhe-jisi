@@ -1,0 +1,18 @@
+{
+  "name": "通义千问 Qwen2.5-1.5B-Instruct · Q4_K_M",
+  "modelId": "shanhe-qwen-1.5b",
+  "modelFile": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "modelBytes": 1117320736,
+  "modelSha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+  "modelUrl": "https://modelscope.cn/models/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/master/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "modelLicenseUrl": "https://modelscope.cn/models/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/master/LICENSE",
+  "modelLicenseSha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+  "engineVersion": "b12211",
+  "engineUrl": "https://github.com/ggml-org/llama.cpp/releases/download/b12211/llama-b12211-bin-win-cpu-x64.zip",
+  "engineBytes": 24886431,
+  "engineSha256": "23729000408c6968faf5e322afc99319d3b8c576ba872ef7663d9b89810090f3",
+  "engineLicenseUrl": "https://raw.githubusercontent.com/ggml-org/llama.cpp/b12211/LICENSE",
+  "modelPort": 18081,
+  "contextSize": 4096,
+  "threads": 6
+}
