@@ -50,7 +50,7 @@ try{
   web=createServer({env});web.listen(port,'127.0.0.1');await once(web,'listening');
   web.on('error',error=>{console.error(error.message);close().catch(()=>{});});
   await fs.writeFile(stateFile,JSON.stringify({launcherPid:process.pid,launcherStartedMs:Date.now()-process.uptime()*1000,enginePid:engine?.pid||null,launcherPath:path.join(root,'tools/run-local-ai.mjs'),enginePath,website:base,model:modelBase,startedAt:new Date().toISOString()},null,2));
-  console.log('本地AI已就绪：'+config.name+'\n网站：'+base+'/ai.html\n推理只在本机进行，不需要API密钥。关闭本窗口或运行“停止本地AI.cmd”即可停止。');
+  console.log('本地AI已就绪：'+config.name+'\n网站：'+base+'/ai.html\n推理只在本机进行，不需要API密钥。关闭本窗口或运行“3-停止本地AI.cmd”即可停止。');
   if(engine)engine.once('exit',()=>{if(!closing)console.error('本地模型已停止，问答将回退到本站资料检索。');});
   openBrowser();
 }catch(error){console.error(error.message);await close();process.exitCode=1;}

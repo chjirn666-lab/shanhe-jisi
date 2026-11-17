@@ -5,7 +5,7 @@ import {createReadStream} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const entries=['dist','src','server.mjs','package.json','.env.example','README.md','部署说明.md','修复验收.md','诗词全文补全验收.md','本地AI使用说明.md','local-ai.config.json','Dockerfile','.dockerignore','compose.yaml','deploy','打开网页.cmd','启动网站.cmd','启动本地AI.cmd','停止本地AI.cmd','tests','tools','poetry-additions.json','quotes-additions.json','domestic-sources.json','archive-links.json','footprint-articles.json','photo-catalog.json','poetry-fulltext.json'];
+const entries=['dist','src','server.mjs','package.json','.env.example','README.md','部署说明.md','修复验收.md','诗词全文补全验收.md','本地AI使用说明.md','local-ai.config.json','Dockerfile','.dockerignore','compose.yaml','deploy','0-打开网页.cmd','1-启动网站.cmd','2-启动本地AI.cmd','3-停止本地AI.cmd','tests','tools','poetry-additions.json','quotes-additions.json','domestic-sources.json','archive-links.json','footprint-articles.json','photo-catalog.json','poetry-fulltext.json'];
 entries.push('biography-periods.json');
 const withLocalAI=process.argv.includes('--with-local-ai'),runtimeEntries=[];
 if(withLocalAI){
