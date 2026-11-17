@@ -1,0 +1,5 @@
+* text=auto
+
+# Windows 批处理必须保留 CRLF，且不做任何换行转换
+*.cmd -text
+*.bat -text
